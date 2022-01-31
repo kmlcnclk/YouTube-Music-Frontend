@@ -308,9 +308,7 @@ class HomeComponent extends Component {
                       <p className="text-[#ffffffB3] ml-1 truncate inline-block cursor-pointer hover:underline">
                         Imagine Dragons
                       </p>
-                      <p className="text-[#ffffffB3] inline-block ml-1">
-                        &bull;
-                      </p>
+                      <p className="text-[#ffffffB3] inline-block ml-1">•</p>
                       <p className="text-[#ffffffB3] inline-block ml-1 truncate cursor-pointer hover:underline">
                         Evolve {ai}
                       </p>

@@ -34,7 +34,7 @@ export default function Home({ dt }) {
     if (data) {
       setMixeds(data);
     }
-  }, [setMixeds]);
+  }, [setMixeds, data]);
 
   return (
     <Box className="bg-black text-white">

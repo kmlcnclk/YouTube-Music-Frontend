@@ -34,7 +34,7 @@ function MusicMenu({
 
   useEffect(() => {
     setMS(musicMenu);
-  }, []);
+  }, [setMS, musicMenu]);
 
   const changeMusic = async (i) => {
     const b = document.getElementById('audio');

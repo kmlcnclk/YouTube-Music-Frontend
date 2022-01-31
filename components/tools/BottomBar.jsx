@@ -88,7 +88,19 @@ function BottomBar() {
       a.removeEventListener('loadeddata', setAudioData);
       a.removeEventListener('timeupdate', setAudioTime);
     };
-  }, [router, musicMenu, musicPlay]);
+  }, [
+    router,
+    musicMenu,
+    musicPlay,
+    clickedTime,
+    curMus,
+    curTime,
+    currentMusic,
+    dur,
+    nextFunc,
+    sa,
+    volume,
+  ]);
 
   const musicMenuFunc = () => {
     if (musicMenu) {

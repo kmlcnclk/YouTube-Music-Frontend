@@ -95,7 +95,6 @@ class HomeComponent extends Component {
     const res = await unfetch(`${process.env.BACKEND_URL}/music/get20Music`);
 
     const data = await res.json();
-    console.log(data);
 
     this.props.dispatch(changeCurrentMusicAndMusicList(data.data.musics));
   };

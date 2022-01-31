@@ -28,13 +28,12 @@ function Header() {
   useEffect(() => {
     const headerList = ['/', '/explore', '/library/playlists'];
 
-    headerList.forEach((listItem) => {
-      if (listItem == router.asPath) {
-        console.log(listItem);
-        console.log(router.asPath);
+ 
+    for (const listItem of headerList) {
+         if (listItem == router.asPath) {
         dispatch(changeValue(router.asPath));
       }
-    });
+    }
 
     const changeBackground = () => {
       if (window.scrollY >= 1) {

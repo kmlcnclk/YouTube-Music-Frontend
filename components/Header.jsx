@@ -46,7 +46,7 @@ function Header() {
     return () => {
       window.removeEventListener('scroll', changeBackground);
     };
-  }, [setNavbar, dispatch, router]);
+  }, [setNavbar, dispatch, router, headerList]);
 
   return (
     <Flex

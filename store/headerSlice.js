@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 export const HeaderSlice = createSlice({
   name: 'header',
   initialState: {
-    value: '/',
+    value: '',
   },
   reducers: {
     changeValue: (state, action) => {

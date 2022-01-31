@@ -60,13 +60,57 @@ function BottomBar() {
     const setAudioData = () => {
       setDur(a.duration);
     };
+    const nextF = async () => {
+      const b = document.getElementById('audio');
+      setClickedTime(null);
+      setCurTime(0);
+
+      if (b.play()) {
+        await b.pause();
+        await dispatch(falseChangeValueMusicPlay());
+      }
+
+      await dispatch(changeCurrentIndex(currentIndex + 1));
+
+      await setCurMus(currentMusic);
+      const a = await document.getElementById('audio');
+      setAudio(a);
+
+      a.volume = volume / 100;
+      a.currentTime = 0;
+
+      const setAudioData = () => {
+        setDur(a.duration);
+        setCurTime(a.currentTime);
+      };
+
+      const setAudioTime = () => {
+        setCurTime(a.currentTime);
+      };
+
+      a.addEventListener('loadeddata', setAudioData);
+
+      a.addEventListener('timeupdate', setAudioTime);
+
+      if (clickedTime && clickedTime !== curTime) {
+        a.currentTime = clickedTime;
+        setClickedTime(null);
+      }
+
+      setCurPercentage((curTime / dur) * 100);
+
+      setTimeout(() => {
+        a.play();
+        dispatch(trueChangeValueMusicPlay());
+      }, 400);
+    };
 
     const setAudioTime = () => {
       setCurTime(a.currentTime);
       setCurPercentage((curTime / dur) * 100);
 
       if (a.currentTime == a.duration) {
-        nextFunc();
+        nextF();
       }
     };
 
@@ -97,7 +141,7 @@ function BottomBar() {
     curTime,
     currentMusic,
     dur,
-    nextFunc,
+
     sa,
     volume,
   ]);

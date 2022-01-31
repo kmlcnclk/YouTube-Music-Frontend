@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Flex,
   Heading,
@@ -24,11 +24,14 @@ function Header() {
   const [navbar, setNavbar] = useState(false);
 
   const router = useRouter();
-  const headerList = ['/', '/explore', '/library'];
 
   useEffect(() => {
+    const headerList = ['/', '/explore', '/library/playlists'];
+
     headerList.forEach((listItem) => {
       if (listItem == router.asPath) {
+        console.log(listItem);
+        console.log(router.asPath);
         dispatch(changeValue(router.asPath));
       }
     });
@@ -46,7 +49,7 @@ function Header() {
     return () => {
       window.removeEventListener('scroll', changeBackground);
     };
-  }, [setNavbar, dispatch, router, headerList]);
+  }, [setNavbar, dispatch, router]);
 
   return (
     <Flex
@@ -141,12 +144,12 @@ function Header() {
               Explore
             </Heading>
           </Link>
-          <Link href="/library" passHref>
+          <Link href="/library/playlists" passHref>
             <Heading
               size="md"
               mr="10"
-              opacity={headerValue === '/library' ? '1.0' : '0.5'}
-              onClick={() => dispatch(changeValue('/library'))}
+              opacity={headerValue === '/library/playlists' ? '1.0' : '0.5'}
+              onClick={() => dispatch(changeValue('/library/playlists'))}
               _hover={{ opacity: '1.0' }}
               cursor="pointer"
             >

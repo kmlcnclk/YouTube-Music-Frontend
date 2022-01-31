@@ -141,7 +141,8 @@ function BottomBar() {
     curTime,
     currentMusic,
     dur,
-
+    dispatch,
+    currentIndex,
     sa,
     volume,
   ]);

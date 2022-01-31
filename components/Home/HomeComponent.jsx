@@ -12,7 +12,6 @@ import {
 import { changeValueMusicID } from '../../store/musicIDSlice';
 import { changeCurrentMusicAndMusicList } from '../../store/currentMusicSlice';
 import unfetch from 'isomorphic-unfetch';
-import ReactAudioPlayer from 'react-audio-player';
 
 class HomeComponent extends Component {
   state = {
@@ -308,7 +307,9 @@ class HomeComponent extends Component {
                       <p className="text-[#ffffffB3] ml-1 truncate inline-block cursor-pointer hover:underline">
                         Imagine Dragons
                       </p>
-                      <p className="text-[#ffffffB3] inline-block ml-1">•</p>
+                      <p className="text-[#ffffffB3] inline-block ml-1">
+                        &bull;
+                      </p>
                       <p className="text-[#ffffffB3] inline-block ml-1 truncate cursor-pointer hover:underline">
                         Evolve {ai}
                       </p>
@@ -350,10 +351,10 @@ class HomeComponent extends Component {
               Tell us which artists you like
             </p>
             <p className="mb-6 text-[#AAAAAA] text-sm">
-              We'll create an experience just for you
+              We&apos;ll create an experience just for you
             </p>
             <button className="font-semibold text-sm py-[10px] px-4 bg-[#121212] rounded-sm">
-              LET'S GO
+              LET&apos;S GO
             </button>
           </div>
         </div>

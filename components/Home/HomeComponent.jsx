@@ -11,7 +11,6 @@ import {
 } from '../../store/musicPlaySlice';
 import { changeValueMusicID } from '../../store/musicIDSlice';
 import { changeCurrentMusicAndMusicList } from '../../store/currentMusicSlice';
-import unfetch from 'isomorphic-unfetch';
 
 class HomeComponent extends Component {
   state = {
@@ -91,12 +90,16 @@ class HomeComponent extends Component {
     return a;
   };
 
-  getMusicFunc = async (id) => {
-    const res = await unfetch(`${process.env.BACKEND_URL}/music/get20Music`);
+  getMusicFunc = async () => {
+    const res = await fetch(`${process.env.BACKEND_URL}/music/get20Music`);
 
     const data = await res.json();
 
-    this.props.dispatch(changeCurrentMusicAndMusicList(data.data.musics));
+    if (data) {
+      if (data.success) {
+        this.props.dispatch(changeCurrentMusicAndMusicList(data.data.musics));
+      }
+    }
   };
 
   render() {

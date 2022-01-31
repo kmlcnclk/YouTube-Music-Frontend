@@ -28,9 +28,8 @@ function Header() {
   useEffect(() => {
     const headerList = ['/', '/explore', '/library/playlists'];
 
- 
     for (const listItem of headerList) {
-         if (listItem == router.asPath) {
+      if (listItem == router.asPath) {
         dispatch(changeValue(router.asPath));
       }
     }

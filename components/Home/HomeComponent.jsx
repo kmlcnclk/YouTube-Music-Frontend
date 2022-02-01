@@ -271,12 +271,12 @@ class HomeComponent extends Component {
                       onClick={() => {
                         setTimeout(() => {
                           dispatch(trueChangeValue());
-                          dispatch(changeValueMusicID(ai));
-                          // if (musicID == ai && musicPlay) {
-                          //   dispatch(falseChangeValueMusicPlay());
-                          // } else {
-                          //   dispatch(trueChangeValueMusicPlay());
-                          // }
+                          // dispatch(changeValueMusicID(ai));
+                          if (musicID == ai && musicPlay) {
+                            dispatch(falseChangeValueMusicPlay());
+                          } else {
+                            dispatch(trueChangeValueMusicPlay());
+                          }
                         }, 1000);
                       }}
                     >

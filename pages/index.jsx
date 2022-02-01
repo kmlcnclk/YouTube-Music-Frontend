@@ -11,6 +11,7 @@ import BottomBar from '../components/tools/BottomBar';
 export default function Home({ dt }) {
   const bottomBar = useSelector((state) => state.bottomBar.value);
   const musicPlay = useSelector((state) => state.musicPlay.value);
+  const currentMusicList = useSelector((state) => state.currentMusic.musics);
   const musicID = useSelector((state) => state.musicID.value);
   const dispatch = useDispatch();
 
@@ -65,7 +66,7 @@ export default function Home({ dt }) {
           }}
         />
       ) : null}
-      {bottomBar ? <BottomBar /> : null}
+      {bottomBar && currentMusicList[0] ? <BottomBar /> : null}
     </Box>
   );
 }

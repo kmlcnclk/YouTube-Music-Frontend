@@ -44,7 +44,7 @@ export default function Home({ dt }) {
         <link rel="icon" href="/ym.png" />
       </Head>
       <Header />
-      {
+      {mixeds && mixeds.success ? (
         <HomeComponent
           {...{
             mix,
@@ -64,7 +64,7 @@ export default function Home({ dt }) {
             musicID,
           }}
         />
-      }
+      ) : null}
       {bottomBar ? <BottomBar /> : null}
     </Box>
   );

@@ -250,14 +250,16 @@ class HomeComponent extends Component {
                 >
                   <Box
                     bgImage={
-                      musicPlay && musicID == ai ? '' : '/whatever-it-takes.jpg'
+                      musicPlay && musicID == ai
+                        ? null
+                        : '/whatever-it-takes.jpg'
                     }
                     className={
                       musicPlay && musicID == ai
                         ? 'pick-image-music-id'
                         : 'pick-image'
                     }
-                    onClick={() => this.getMusicFunc}
+                    // onClick={this.getMusicFunc}
                     bgSize="contain"
                   >
                     <div

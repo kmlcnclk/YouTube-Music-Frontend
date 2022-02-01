@@ -259,7 +259,7 @@ class HomeComponent extends Component {
                         ? 'pick-image-music-id'
                         : 'pick-image'
                     }
-                    onClick={this.getMusicFunc}
+                    onClick={() => this.getMusicFunc}
                     bgSize="contain"
                   >
                     <div

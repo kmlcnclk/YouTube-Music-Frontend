@@ -91,9 +91,7 @@ class HomeComponent extends Component {
   };
 
   getMusicFunc = async () => {
-    const res = await unfetch(
-      `https://youtube-music-backend.herokuapp.com/music/get20Music`
-    );
+    const res = await unfetch(`${process.env.BACKEND_URL}/music/get20Music`);
     const data = await res.json();
 
     if (data) {

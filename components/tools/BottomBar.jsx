@@ -29,7 +29,6 @@ function BottomBar() {
   const currentIndex = useSelector((state) => state.currentMusic.currentIndex);
   const currentMusicList = useSelector((state) => state.currentMusic.musics);
   const [clickedTime, setClickedTime] = useState(null);
-  const [audio, setAudio] = useState(null);
   const [dur, setDur] = useState(null);
   const [curTime, setCurTime] = useState(null);
   const [volume, setVolume] = useState(30);
@@ -70,8 +69,6 @@ function BottomBar() {
         await dispatch(changeCurrentIndex(currentIndex + 1));
 
         await setCurMus(currentMusic);
-        const a = await document.getElementById('audio');
-        setAudio(a);
 
         audioRef.current.volume = volume / 100;
         audioRef.current.currentTime = 0;

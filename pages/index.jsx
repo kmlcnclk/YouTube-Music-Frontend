@@ -8,7 +8,7 @@ import unFetch from 'isomorphic-unfetch';
 import { useSelector, useDispatch } from 'react-redux';
 import BottomBar from '../components/tools/BottomBar';
 
-export default function Home({}) {
+export default function Home({ dt }) {
   const bottomBar = useSelector((state) => state.bottomBar.value);
   const musicPlay = useSelector((state) => state.musicPlay.value);
   const musicID = useSelector((state) => state.musicID.value);
@@ -23,18 +23,18 @@ export default function Home({}) {
   const [next2, setNext2] = useState(false);
   const [mixeds, setMixeds] = useState({});
 
-  const { data } = useSWR(
-    [`${process.env.BACKEND_URL}/homePage/mixed`, 'GET']
-    // {
-    //   fallbackData: dt,
-    // }
-  );
+  // const { data } = useSWR(
+  //   [`${process.env.BACKEND_URL}/homePage/mixed`, 'GET']
+  // {
+  //   fallbackData: dt,
+  // }
+  // );
 
   useEffect(() => {
-    if (data) {
-      setMixeds(data);
+    if (dt) {
+      setMixeds(dt);
     }
-  }, [setMixeds, data]);
+  }, [setMixeds, dt]);
 
   return (
     <Box className="bg-black text-white">
@@ -70,10 +70,10 @@ export default function Home({}) {
   );
 }
 
-// Home.getInitialProps = async (ctx) => {
-//   const res = await unFetch(`${process.env.BACKEND_URL}/homePage/mixed`);
+Home.getInitialProps = async (ctx) => {
+  const res = await unFetch(`${process.env.BACKEND_URL}/homePage/mixed`);
 
-//   const dt = await res.json();
+  const dt = await res.json();
 
-//   return { dt };
-// };
+  return { dt };
+};

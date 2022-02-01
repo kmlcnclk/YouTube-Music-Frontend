@@ -8,7 +8,7 @@ import unFetch from 'isomorphic-unfetch';
 import { useSelector, useDispatch } from 'react-redux';
 import BottomBar from '../components/tools/BottomBar';
 
-export default function Home({ dt }) {
+export default function Home({}) {
   const bottomBar = useSelector((state) => state.bottomBar.value);
   const musicPlay = useSelector((state) => state.musicPlay.value);
   const musicID = useSelector((state) => state.musicID.value);
@@ -24,10 +24,10 @@ export default function Home({ dt }) {
   const [mixeds, setMixeds] = useState({});
 
   const { data } = useSWR(
-    [`${process.env.BACKEND_URL}/homePage/mixed`, 'GET'],
-    {
-      fallbackData: dt,
-    }
+    [`${process.env.BACKEND_URL}/homePage/mixed`, 'GET']
+    // {
+    //   fallbackData: dt,
+    // }
   );
 
   useEffect(() => {
@@ -70,10 +70,10 @@ export default function Home({ dt }) {
   );
 }
 
-Home.getInitialProps = async (ctx) => {
-  const res = await unFetch(`${process.env.BACKEND_URL}/homePage/mixed`);
+// Home.getInitialProps = async (ctx) => {
+//   const res = await unFetch(`${process.env.BACKEND_URL}/homePage/mixed`);
 
-  const dt = await res.json();
+//   const dt = await res.json();
 
-  return { dt };
-};
+//   return { dt };
+// };

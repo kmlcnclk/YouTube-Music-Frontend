@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { changeValue } from '../store/headerSlice';
 
 function Header() {
-  // const headerValue = useSelector((state) => state.header.value);
+  const headerValue = useSelector((state) => state.header.value);
   const dispatch = useDispatch();
 
   const [searchInputState, setSearchInputState] = useState(false);
@@ -26,13 +26,13 @@ function Header() {
   const router = useRouter();
 
   useEffect(() => {
-    // const headerList = ['/', '/explore', '/library/playlists'];
+    const headerList = ['/', '/explore', '/library/playlists'];
 
-    // for (const listItem of headerList) {
-    //   if (listItem == router.asPath) {
-    //     dispatch(changeValue(router.asPath));
-    //   }
-    // }
+    for (const listItem of headerList) {
+      if (listItem == router.asPath) {
+        dispatch(changeValue(router.asPath));
+      }
+    }
 
     const changeBackground = () => {
       if (window.scrollY >= 1) {
@@ -122,8 +122,8 @@ function Header() {
             <Heading
               size="md"
               mr="10"
-              // opacity={headerValue === '/' ? '1.0' : '0.5'}
-              // onClick={() => dispatch(changeValue('/'))}
+              opacity={headerValue === '/' ? '1.0' : '0.5'}
+              onClick={() => dispatch(changeValue('/'))}
               _hover={{ opacity: '1.0' }}
               cursor="pointer"
             >
@@ -134,8 +134,8 @@ function Header() {
             <Heading
               size="md"
               mr="10"
-              // opacity={headerValue === '/explore' ? '1.0' : '0.5'}
-              // onClick={() => dispatch(changeValue('/explore'))}
+              opacity={headerValue === '/explore' ? '1.0' : '0.5'}
+              onClick={() => dispatch(changeValue('/explore'))}
               _hover={{ opacity: '1.0' }}
               cursor="pointer"
             >
@@ -146,8 +146,8 @@ function Header() {
             <Heading
               size="md"
               mr="10"
-              // opacity={headerValue === '/library/playlists' ? '1.0' : '0.5'}
-              // onClick={() => dispatch(changeValue('/library/playlists'))}
+              opacity={headerValue === '/library/playlists' ? '1.0' : '0.5'}
+              onClick={() => dispatch(changeValue('/library/playlists'))}
               _hover={{ opacity: '1.0' }}
               cursor="pointer"
             >

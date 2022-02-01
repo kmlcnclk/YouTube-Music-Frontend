@@ -79,18 +79,18 @@ function BottomBar() {
     //   a.volume = volume / 100;
     //   a.currentTime = 0;
 
-    //   const setAudioData = () => {
-    //     setDur(a.duration);
-    //     setCurTime(a.currentTime);
-    //   };
+    const setAudioData = () => {
+      setDur(a.duration);
+      setCurTime(a.currentTime);
+    };
 
-    //   const setAudioTime = () => {
-    //     setCurTime(a.currentTime);
-    //   };
+    const setAudioTime = () => {
+      setCurTime(a.currentTime);
+    };
 
-    //   a.addEventListener('loadeddata', setAudioData);
+    a.addEventListener('loadeddata', setAudioData);
 
-    //   a.addEventListener('timeupdate', setAudioTime);
+    a.addEventListener('timeupdate', setAudioTime);
 
     //   if (clickedTime && clickedTime !== curTime) {
     //     a.currentTime = clickedTime;

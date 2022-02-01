@@ -250,9 +250,7 @@ class HomeComponent extends Component {
                 >
                   <Box
                     bgImage={
-                      musicPlay && musicID == ai
-                        ? null
-                        : '/whatever-it-takes.jpg'
+                      musicPlay && musicID == ai ? '' : '/whatever-it-takes.jpg'
                     }
                     className={
                       musicPlay && musicID == ai

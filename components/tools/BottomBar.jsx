@@ -45,107 +45,107 @@ function BottomBar() {
   const [ms, setMS] = useState(false);
   const [curPercentage, setCurPercentage] = useState(null);
 
-  useEffect(() => {
-    router.prefetch('/');
-    router.prefetch('/watch');
+  // useEffect(() => {
+  //   router.prefetch('/');
+  //   router.prefetch('/watch');
 
-    setCurMus(currentMusic);
-    const a = document.getElementById('audio');
-    setAudio(a);
+  //   setCurMus(currentMusic);
+  //   const a = document.getElementById('audio');
+  //   setAudio(a);
 
-    if (a) {
-      a.volume = volume / 100;
-    }
+  //   if (a) {
+  //     a.volume = volume / 100;
+  //   }
 
-    const setAudioData = () => {
-      setDur(a.duration);
-    };
-    const nextF = async () => {
-      const b = document.getElementById('audio');
-      setClickedTime(null);
-      setCurTime(0);
+  //   const setAudioData = () => {
+  //     setDur(a.duration);
+  //   };
+  //   const nextF = async () => {
+  //     const b = document.getElementById('audio');
+  //     setClickedTime(null);
+  //     setCurTime(0);
 
-      if (b.play()) {
-        await b.pause();
-        await dispatch(falseChangeValueMusicPlay());
-      }
+  //     if (b.play()) {
+  //       await b.pause();
+  //       await dispatch(falseChangeValueMusicPlay());
+  //     }
 
-      await dispatch(changeCurrentIndex(currentIndex + 1));
+  //     await dispatch(changeCurrentIndex(currentIndex + 1));
 
-      await setCurMus(currentMusic);
-      const a = await document.getElementById('audio');
-      setAudio(a);
+  //     await setCurMus(currentMusic);
+  //     const a = await document.getElementById('audio');
+  //     setAudio(a);
 
-      a.volume = volume / 100;
-      a.currentTime = 0;
+  //     a.volume = volume / 100;
+  //     a.currentTime = 0;
 
-      const setAudioData = () => {
-        setDur(a.duration);
-        setCurTime(a.currentTime);
-      };
+  //     const setAudioData = () => {
+  //       setDur(a.duration);
+  //       setCurTime(a.currentTime);
+  //     };
 
-      const setAudioTime = () => {
-        setCurTime(a.currentTime);
-      };
+  //     const setAudioTime = () => {
+  //       setCurTime(a.currentTime);
+  //     };
 
-      a.addEventListener('loadeddata', setAudioData);
+  //     a.addEventListener('loadeddata', setAudioData);
 
-      a.addEventListener('timeupdate', setAudioTime);
+  //     a.addEventListener('timeupdate', setAudioTime);
 
-      if (clickedTime && clickedTime !== curTime) {
-        a.currentTime = clickedTime;
-        setClickedTime(null);
-      }
+  //     if (clickedTime && clickedTime !== curTime) {
+  //       a.currentTime = clickedTime;
+  //       setClickedTime(null);
+  //     }
 
-      setCurPercentage((curTime / dur) * 100);
+  //     setCurPercentage((curTime / dur) * 100);
 
-      setTimeout(() => {
-        a.play();
-        dispatch(trueChangeValueMusicPlay());
-      }, 400);
-    };
+  //     setTimeout(() => {
+  //       a.play();
+  //       dispatch(trueChangeValueMusicPlay());
+  //     }, 400);
+  //   };
 
-    const setAudioTime = () => {
-      setCurTime(a.currentTime);
-      setCurPercentage((curTime / dur) * 100);
+  //   const setAudioTime = () => {
+  //     setCurTime(a.currentTime);
+  //     setCurPercentage((curTime / dur) * 100);
 
-      if (a.currentTime == a.duration) {
-        nextF();
-      }
-    };
+  //     if (a.currentTime == a.duration) {
+  //       nextF();
+  //     }
+  //   };
 
-    a.addEventListener('loadeddata', setAudioData);
+  //   a.addEventListener('loadeddata', setAudioData);
 
-    a.addEventListener('timeupdate', setAudioTime);
+  //   a.addEventListener('timeupdate', setAudioTime);
 
-    if (curMus == currentMusic) {
-      musicPlay ? a.play() : a.pause();
-    }
+  //   if (curMus == currentMusic) {
+  //     musicPlay ? a.play() : a.pause();
+  //   }
 
-    if (clickedTime && clickedTime !== curTime && sa) {
-      console.log('sa');
-      a.currentTime = clickedTime;
-      setClickedTime(null);
-    }
+  //   if (clickedTime && clickedTime !== curTime && sa) {
+  //     console.log('sa');
+  //     a.currentTime = clickedTime;
+  //     setClickedTime(null);
+  //   }
 
-    return () => {
-      a.removeEventListener('loadeddata', setAudioData);
-      a.removeEventListener('timeupdate', setAudioTime);
-    };
-  }, [
-    router,
-    musicMenu,
-    musicPlay,
-    clickedTime,
-    curMus,
-    curTime,
-    currentMusic,
-    dur,
-    dispatch,
-    currentIndex,
-    sa,
-    volume,
-  ]);
+  //   return () => {
+  //     a.removeEventListener('loadeddata', setAudioData);
+  //     a.removeEventListener('timeupdate', setAudioTime);
+  //   };
+  // }, [
+  //   router,
+  //   musicMenu,
+  //   musicPlay,
+  //   clickedTime,
+  //   curMus,
+  //   curTime,
+  //   currentMusic,
+  //   dur,
+  //   dispatch,
+  //   currentIndex,
+  //   sa,
+  //   volume,
+  // ]);
 
   const musicMenuFunc = () => {
     if (musicMenu) {

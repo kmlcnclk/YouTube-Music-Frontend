@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { changeValue } from '../store/headerSlice';
 
 function Header() {
-  const headerValue = useSelector((state) => state.header.value);
+  // const headerValue = useSelector((state) => state.header.value);
   const dispatch = useDispatch();
 
   const [searchInputState, setSearchInputState] = useState(false);
@@ -122,7 +122,7 @@ function Header() {
             <Heading
               size="md"
               mr="10"
-              opacity={headerValue === '/' ? '1.0' : '0.5'}
+              // opacity={headerValue === '/' ? '1.0' : '0.5'}
               // onClick={() => dispatch(changeValue('/'))}
               _hover={{ opacity: '1.0' }}
               cursor="pointer"
@@ -134,7 +134,7 @@ function Header() {
             <Heading
               size="md"
               mr="10"
-              opacity={headerValue === '/explore' ? '1.0' : '0.5'}
+              // opacity={headerValue === '/explore' ? '1.0' : '0.5'}
               // onClick={() => dispatch(changeValue('/explore'))}
               _hover={{ opacity: '1.0' }}
               cursor="pointer"
@@ -146,7 +146,7 @@ function Header() {
             <Heading
               size="md"
               mr="10"
-              opacity={headerValue === '/library/playlists' ? '1.0' : '0.5'}
+              // opacity={headerValue === '/library/playlists' ? '1.0' : '0.5'}
               // onClick={() => dispatch(changeValue('/library/playlists'))}
               _hover={{ opacity: '1.0' }}
               cursor="pointer"

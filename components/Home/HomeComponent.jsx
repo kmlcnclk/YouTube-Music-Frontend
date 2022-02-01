@@ -259,7 +259,7 @@ class HomeComponent extends Component {
                         ? 'pick-image-music-id'
                         : 'pick-image'
                     }
-                    // onClick={this.getMusicFunc}
+                    onClick={this.getMusicFunc}
                     bgSize="contain"
                   >
                     <div
@@ -268,17 +268,17 @@ class HomeComponent extends Component {
                           ? 'pick-image-icon opacity-100 block'
                           : 'pick-image-icon'
                       }
-                      onClick={() => {
-                        setTimeout(() => {
-                          dispatch(trueChangeValue());
-                          dispatch(changeValueMusicID(ai));
-                          if (musicID == ai && musicPlay) {
-                            dispatch(falseChangeValueMusicPlay());
-                          } else {
-                            dispatch(trueChangeValueMusicPlay());
-                          }
-                        }, 1000);
-                      }}
+                      // onClick={() => {
+                      //   setTimeout(() => {
+                      //     dispatch(trueChangeValue());
+                      //     dispatch(changeValueMusicID(ai));
+                      //     if (musicID == ai && musicPlay) {
+                      //       dispatch(falseChangeValueMusicPlay());
+                      //     } else {
+                      //       dispatch(trueChangeValueMusicPlay());
+                      //     }
+                      //   }, 1000);
+                      // }}
                     >
                       {musicPlay && musicID == ai ? (
                         <div>

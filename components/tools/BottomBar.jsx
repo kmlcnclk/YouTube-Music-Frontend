@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeValue } from '../../store/musicMenuSlice';
 import {
@@ -37,6 +37,8 @@ function BottomBar() {
   const router = useRouter();
   const [curMus, setCurMus] = useState({});
 
+  const audioRef = useRef();
+
   const [likeState, setLikeState] = useState(false);
   const [unLikeState, setUnLikeState] = useState(false);
   const [repeatState, setRepeatState] = useState('no repeat');
@@ -50,87 +52,82 @@ function BottomBar() {
     router.prefetch('/watch');
 
     setCurMus(currentMusic);
-    const a = document.getElementById('audio');
-    setAudio(a);
+    if (audioRef.current) {
+      audioRef.current.volume = volume / 100;
 
-    // if (a) {
-    //   a.volume = volume / 100;
-    // }
+      const setAudioData = () => {
+        setDur(audioRef.current.duration);
+      };
+      const nextF = async () => {
+        setClickedTime(null);
+        setCurTime(0);
 
-    // const setAudioData = () => {
-    //   setDur(a.duration);
-    // };
-    // const nextF = async () => {
-    //   const b = document.getElementById('audio');
-    //   setClickedTime(null);
-    //   setCurTime(0);
+        if (audioRef.current.play()) {
+          await audioRef.current.pause();
+          await dispatch(falseChangeValueMusicPlay());
+        }
 
-    //   if (b.play()) {
-    //     await b.pause();
-    //     await dispatch(falseChangeValueMusicPlay());
-    //   }
+        await dispatch(changeCurrentIndex(currentIndex + 1));
 
-    //   await dispatch(changeCurrentIndex(currentIndex + 1));
+        await setCurMus(currentMusic);
+        const a = await document.getElementById('audio');
+        setAudio(a);
 
-    //   await setCurMus(currentMusic);
-    //   const a = await document.getElementById('audio');
-    //   setAudio(a);
+        audioRef.current.volume = volume / 100;
+        audioRef.current.currentTime = 0;
 
-    //   a.volume = volume / 100;
-    //   a.currentTime = 0;
+        const setAudioData = () => {
+          setDur(audioRef.current.duration);
+          setCurTime(audioRef.current.currentTime);
+        };
 
-    const setAudioData = () => {
-      setDur(a.duration);
-      setCurTime(a.currentTime);
-    };
+        const setAudioTime = () => {
+          setCurTime(audioRef.current.currentTime);
+        };
 
-    const setAudioTime = () => {
-      setCurTime(a.currentTime);
-    };
+        audioRef.current.addEventListener('loadeddata', setAudioData);
 
-    a.addEventListener('loadeddata', setAudioData);
+        audioRef.current.addEventListener('timeupdate', setAudioTime);
 
-    a.addEventListener('timeupdate', setAudioTime);
+        if (clickedTime && clickedTime !== curTime) {
+          audioRef.current.currentTime = clickedTime;
+          setClickedTime(null);
+        }
 
-    //   if (clickedTime && clickedTime !== curTime) {
-    //     a.currentTime = clickedTime;
-    //     setClickedTime(null);
-    //   }
+        setCurPercentage((curTime / dur) * 100);
 
-    //   setCurPercentage((curTime / dur) * 100);
+        setTimeout(() => {
+          audioRef.current.play();
+          dispatch(trueChangeValueMusicPlay());
+        }, 400);
+      };
 
-    //   setTimeout(() => {
-    //     a.play();
-    //     dispatch(trueChangeValueMusicPlay());
-    //   }, 400);
-    // };
+      const setAudioTime = () => {
+        setCurTime(audioRef.current.currentTime);
+        setCurPercentage((curTime / dur) * 100);
 
-    // const setAudioTime = () => {
-    //   setCurTime(a.currentTime);
-    //   setCurPercentage((curTime / dur) * 100);
+        if (audioRef.current.currentTime == audioRef.current.duration) {
+          nextF();
+        }
+      };
 
-    //   if (a.currentTime == a.duration) {
-    //     nextF();
-    //   }
-    // };
+      audioRef.current.addEventListener('loadeddata', setAudioData);
 
-    // a.addEventListener('loadeddata', setAudioData);
+      audioRef.current.addEventListener('timeupdate', setAudioTime);
 
-    // a.addEventListener('timeupdate', setAudioTime);
+      if (curMus == currentMusic) {
+        musicPlay ? audioRef.current.play() : audioRef.current.pause();
+      }
 
-    // if (curMus == currentMusic) {
-    //   musicPlay ? a.play() : a.pause();
-    // }
-
-    // if (clickedTime && clickedTime !== curTime && sa) {
-    //   a.currentTime = clickedTime;
-    //   setClickedTime(null);
-    // }
-
-    //   return () => {
-    //     a.removeEventListener('loadeddata', setAudioData);
-    //     a.removeEventListener('timeupdate', setAudioTime);
-    //   };
+      if (clickedTime && clickedTime !== curTime && sa) {
+        audioRef.current.currentTime = clickedTime;
+        setClickedTime(null);
+      }
+      return () => {
+        audioRef.current.removeEventListener('loadeddata', setAudioData);
+        audioRef.current.removeEventListener('timeupdate', setAudioTime);
+      };
+    }
   }, [
     router,
     musicMenu,
@@ -144,6 +141,7 @@ function BottomBar() {
     currentIndex,
     sa,
     volume,
+    audioRef,
   ]);
 
   const musicMenuFunc = () => {
@@ -164,86 +162,80 @@ function BottomBar() {
   }
 
   const prevFunc = async () => {
-    const b = document.getElementById('audio');
     setClickedTime(null);
     setCurTime(0);
-    if (b.play()) {
-      b.pause();
+    if (audioRef.current.play()) {
+      audioRef.current.pause();
       await dispatch(falseChangeValueMusicPlay());
     }
     await dispatch(changeCurrentIndex(currentIndex - 1));
 
     await setCurMus(currentMusic);
-    const a = await document.getElementById('audio');
 
-    await setAudio(a);
-    a.volume = volume / 100;
-    a.currentTime = 0;
+    audioRef.current.volume = volume / 100;
+    audioRef.current.currentTime = 0;
     const setAudioData = () => {
-      setDur(a.duration);
-      setCurTime(a.currentTime);
+      setDur(audioRef.current.duration);
+      setCurTime(audioRef.current.currentTime);
     };
 
     const setAudioTime = () => {
-      setCurTime(a.currentTime);
+      setCurTime(audioRef.current.currentTime);
     };
 
-    a.addEventListener('loadeddata', setAudioData);
+    audioRef.current.addEventListener('loadeddata', setAudioData);
 
-    a.addEventListener('timeupdate', setAudioTime);
+    audioRef.current.addEventListener('timeupdate', setAudioTime);
 
     if (clickedTime && clickedTime !== curTime) {
-      a.currentTime = clickedTime;
+      audioRef.current.currentTime = clickedTime;
       setClickedTime(null);
     }
 
     setTimeout(() => {
-      a.play();
+      audioRef.current.play();
       dispatch(trueChangeValueMusicPlay());
     }, 400);
   };
 
   const nextFunc = async () => {
-    const b = document.getElementById('audio');
     setClickedTime(null);
     setCurTime(0);
 
-    if (b.play()) {
-      await b.pause();
+    if (audioRef.current.play()) {
+      await audioRef.current.pause();
       await dispatch(falseChangeValueMusicPlay());
     }
 
     await dispatch(changeCurrentIndex(currentIndex + 1));
 
     await setCurMus(currentMusic);
-    const a = await document.getElementById('audio');
-    setAudio(a);
 
-    a.volume = volume / 100;
-    a.currentTime = 0;
+    audioRef.current.volume = volume / 100;
+    audioRef.current.currentTime = 0;
 
     const setAudioData = () => {
-      setDur(a.duration);
-      setCurTime(a.currentTime);
+      setDur(audioRef.current.duration);
+      setCurTime(audioRef.current.currentTime);
     };
 
     const setAudioTime = () => {
-      setCurTime(a.currentTime);
+      setCurTime(audioRef.current.currentTime);
     };
 
-    a.addEventListener('loadeddata', setAudioData);
+    audioRef.current.addEventListener('loadeddata', setAudioData);
 
-    a.addEventListener('timeupdate', setAudioTime);
+    audioRef.current.addEventListener('timeupdate', setAudioTime);
 
     if (clickedTime && clickedTime !== curTime) {
-      a.currentTime = clickedTime;
+      audioRef.current.currentTime = clickedTime;
       setClickedTime(null);
     }
 
     setCurPercentage((curTime / dur) * 100);
 
     setTimeout(() => {
-      a.play();
+      audioRef.current.play();
       dispatch(trueChangeValueMusicPlay());
     }, 400);
   };
@@ -256,10 +248,9 @@ function BottomBar() {
     const clickPositionInBar = clickPositionInPage - barStart;
     const timePerPixel = dur / barWidth;
 
-    const a = document.getElementById('audio');
-
-    a.currentTime = timePerPixel * clickPositionInBar;
-    curPercentage = (a.currentTime / a.duration) * 100;
+    audioRef.current.currentTime = timePerPixel * clickPositionInBar;
+    curPercentage =
+      (audioRef.current.currentTime / audioRef.current.duration) * 100;
   }
   const handleTimeDrag = async (e) => {
     setSa(true);
@@ -285,6 +276,7 @@ function BottomBar() {
         {currentMusicList?.map((music, i) => (
           <audio
             id={currentIndex == i ? 'audio' : ''}
+            ref={currentIndex == i ? audioRef : null}
             className={i == currentIndex ? 'block' : 'hidden'}
             key={music._id}
             crossOrigin="anonymous"
@@ -482,7 +474,7 @@ function BottomBar() {
                   onChange={(e) => {
                     setVolume(e);
                     setVolume2(e);
-                    audio.volume = e / 100;
+                    audioRef.current.volume = e / 100;
                   }}
                 >
                   <SliderTrack bgColor="#909090" h="2px">
@@ -500,7 +492,7 @@ function BottomBar() {
                     color="#909090"
                     onClickFunc={() => {
                       setVolume(volume2);
-                      audio.volume = volume2 / 100;
+                      audioRef.current.volume = volume2 / 100;
                     }}
                     size={24}
                     className="cursor-pointer"
@@ -510,7 +502,7 @@ function BottomBar() {
                     name="musicSound"
                     onClickFunc={() => {
                       setVolume(0);
-                      audio.volume = 0 / 100;
+                      audioRef.current.volume = 0 / 100;
                     }}
                     color="#909090"
                     size={24}
@@ -585,7 +577,7 @@ function BottomBar() {
             ms,
             setCurTime,
             setCurMus,
-            setAudio,
+            audioRef,
             setDur,
             volume,
             clickedTime,

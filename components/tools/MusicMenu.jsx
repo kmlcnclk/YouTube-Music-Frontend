@@ -17,7 +17,7 @@ function MusicMenu({
   ms,
   setCurTime,
   setCurMus,
-  setAudio,
+  audioRef,
   setDur,
   volume,
   clickedTime,
@@ -37,42 +37,38 @@ function MusicMenu({
   }, [setMS, musicMenu]);
 
   const changeMusic = async (i) => {
-    const b = document.getElementById('audio');
     setClickedTime(null);
     setCurTime(0);
-    if (b.play()) {
-      b.pause();
+    if (audioRef.current.play()) {
+      audioRef.current.pause();
       await dispatch(falseChangeValueMusicPlay());
     }
     await dispatch(changeCurrentIndex(currentIndex - 1));
 
     await setCurMus(currentMusic);
-    const a = await document.getElementById('audio');
 
-    await setAudio(a);
-
-    a.volume = volume / 100;
-    a.currentTime = 0;
+    audioRef.current.volume = volume / 100;
+    audioRef.current.currentTime = 0;
     const setAudioData = () => {
-      setDur(a.duration);
-      setCurTime(a.currentTime);
+      setDur(audioRef.current.duration);
+      setCurTime(audioRef.current.currentTime);
     };
 
     const setAudioTime = () => {
-      setCurTime(a.currentTime);
+      setCurTime(audioRef.current.currentTime);
     };
 
-    a.addEventListener('loadeddata', setAudioData);
+    audioRef.current.addEventListener('loadeddata', setAudioData);
 
-    a.addEventListener('timeupdate', setAudioTime);
+    audioRef.current.addEventListener('timeupdate', setAudioTime);
 
     if (clickedTime && clickedTime !== curTime) {
-      a.currentTime = clickedTime;
+      audioRef.current.currentTime = clickedTime;
       setClickedTime(null);
     }
 
     setTimeout(() => {
-      a.play();
+      audioRef.current.play();
       dispatch(trueChangeValueMusicPlay());
     }, 400);
   };

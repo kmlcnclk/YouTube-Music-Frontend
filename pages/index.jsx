@@ -23,18 +23,18 @@ export default function Home({ dt }) {
   const [next2, setNext2] = useState(false);
   const [mixeds, setMixeds] = useState({});
 
-  // const { data } = useSWR(
-  //   [`${process.env.BACKEND_URL}/homePage/mixed`, 'GET']
-  // {
-  //   fallbackData: dt,
-  // }
-  // );
+  const { data } = useSWR(
+    [`${process.env.BACKEND_URL}/homePage/mixed`, 'GET'],
+    {
+      fallbackData: dt,
+    }
+  );
 
   useEffect(() => {
-    if (dt) {
-      setMixeds(dt);
+    if (data) {
+      setMixeds(data);
     }
-  }, [setMixeds, dt]);
+  }, [setMixeds, data]);
 
   return (
     <Box className="bg-black text-white">

@@ -14,6 +14,7 @@ import {
   changeCurrentMusicAndMusicList,
   a,
 } from '../../store/currentMusicSlice';
+import unfetch from 'isomorphic-unfetch';
 
 class HomeComponent extends Component {
   state = {
@@ -90,7 +91,7 @@ class HomeComponent extends Component {
   };
 
   getMusicFunc = async () => {
-    const res = await fetch(`${process.env.BACKEND_URL}/music/get20Music`);
+    const res = await unfetch(`${process.env.BACKEND_URL}/music/get20Music`);
     const data = await res.json();
 
     if (data) {

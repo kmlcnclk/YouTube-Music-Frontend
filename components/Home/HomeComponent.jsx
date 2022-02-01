@@ -95,11 +95,11 @@ class HomeComponent extends Component {
 
     const data = await res.json();
 
-    if (data) {
-      if (data.success) {
+    // if (data) {
+      // if (data.success) {
         this.props.dispatch(changeCurrentMusicAndMusicList(data.data.musics));
-      }
-    }
+      // }
+    // }
   };
 
   render() {

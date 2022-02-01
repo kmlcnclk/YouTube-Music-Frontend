@@ -26,13 +26,13 @@ function Header() {
   const router = useRouter();
 
   useEffect(() => {
-    const headerList = ['/', '/explore', '/library/playlists'];
+    // const headerList = ['/', '/explore', '/library/playlists'];
 
-    for (const listItem of headerList) {
-      if (listItem == router.asPath) {
-        dispatch(changeValue(router.asPath));
-      }
-    }
+    // for (const listItem of headerList) {
+    //   if (listItem == router.asPath) {
+    //     dispatch(changeValue(router.asPath));
+    //   }
+    // }
 
     const changeBackground = () => {
       if (window.scrollY >= 1) {
@@ -123,7 +123,7 @@ function Header() {
               size="md"
               mr="10"
               opacity={headerValue === '/' ? '1.0' : '0.5'}
-              onClick={() => dispatch(changeValue('/'))}
+              // onClick={() => dispatch(changeValue('/'))}
               _hover={{ opacity: '1.0' }}
               cursor="pointer"
             >
@@ -135,7 +135,7 @@ function Header() {
               size="md"
               mr="10"
               opacity={headerValue === '/explore' ? '1.0' : '0.5'}
-              onClick={() => dispatch(changeValue('/explore'))}
+              // onClick={() => dispatch(changeValue('/explore'))}
               _hover={{ opacity: '1.0' }}
               cursor="pointer"
             >
@@ -147,7 +147,7 @@ function Header() {
               size="md"
               mr="10"
               opacity={headerValue === '/library/playlists' ? '1.0' : '0.5'}
-              onClick={() => dispatch(changeValue('/library/playlists'))}
+              // onClick={() => dispatch(changeValue('/library/playlists'))}
               _hover={{ opacity: '1.0' }}
               cursor="pointer"
             >

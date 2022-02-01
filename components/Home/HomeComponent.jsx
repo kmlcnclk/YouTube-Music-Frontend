@@ -91,15 +91,14 @@ class HomeComponent extends Component {
   };
 
   getMusicFunc = async () => {
+    console.log(process.env.BACKEND_URL);
     const res = await unfetch(`${process.env.BACKEND_URL}/music/get20Music`);
     const data = await res.json();
 
     if (data) {
       if (data.success) {
-        console.log('se1');
         this.props.dispatch(changeCurrentMusicAndMusicList(data.data.musics));
         this.props.dispatch(a(data.data.musics));
-        console.log('se2');
       }
     }
   };

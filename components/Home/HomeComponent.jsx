@@ -10,7 +10,10 @@ import {
   falseChangeValueMusicPlay,
 } from '../../store/musicPlaySlice';
 import { changeValueMusicID } from '../../store/musicIDSlice';
-import { changeCurrentMusicAndMusicList } from '../../store/currentMusicSlice';
+import {
+  changeCurrentMusicAndMusicList,
+  a,
+} from '../../store/currentMusicSlice';
 
 class HomeComponent extends Component {
   state = {
@@ -90,11 +93,14 @@ class HomeComponent extends Component {
     const res = await fetch(`${process.env.BACKEND_URL}/music/get20Music`);
     const data = await res.json();
 
-    // if (data) {
-    //   if (data.success) {
-    this.props.dispatch(changeCurrentMusicAndMusicList(data.data.musics));
-    //   }
-    // }
+    if (data) {
+      if (data.success) {
+        console.log('se1');
+        this.props.dispatch(changeCurrentMusicAndMusicList(data.data.musics));
+        this.props.dispatch(a(data.data.musics));
+        console.log('se2');
+      }
+    }
   };
 
   render() {

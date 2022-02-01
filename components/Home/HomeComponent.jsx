@@ -18,45 +18,45 @@ class HomeComponent extends Component {
   };
 
   componentDidMount = () => {
-    // const { mix, setPrev1, setNext1, pick, setPrev2, setNext2 } = this.props;
-    // if (mix.current) {
-    //   const scrollHandle1 = () => {
-    //     const isEnd =
-    //       mix.current.scrollLeft + mix.current.offsetWidth ==
-    //       mix.current.scrollWidth;
-    //     const isBegin = mix.current.scrollLeft == 0;
-    //     setPrev1(!isBegin);
-    //     setNext1(!isEnd);
-    //   };
-    //   scrollHandle1();
-    //   mix.current.addEventListener('scroll', scrollHandle1);
-    // }
-    // if (pick.current) {
-    //   const scrollHandle2 = () => {
-    //     const isEnd =
-    //       pick.current.scrollLeft + pick.current.offsetWidth ==
-    //       pick.current.scrollWidth;
-    //     const isBegin = pick.current.scrollLeft == 0;
-    //     setPrev2(!isBegin);
-    //     setNext2(!isEnd);
-    //   };
-    //   scrollHandle2();
-    //   pick.current.addEventListener('scroll', scrollHandle2);
-    // }
-    // if (mix.current && pick.current)
-    //   return () => {
-    //     mix?.current?.removeEventListener('scroll', scrollHandle1);
-    //     pick?.current?.removeEventListener('scroll', scrollHandle2);
-    //   };
-    // else if (mix.current) {
-    //   return () => {
-    //     mix?.current?.removeEventListener('scroll', scrollHandle1);
-    //   };
-    // } else if (pick.current) {
-    //   return () => {
-    //     pick?.current?.removeEventListener('scroll', scrollHandle2);
-    //   };
-    // }
+    const { mix, setPrev1, setNext1, pick, setPrev2, setNext2 } = this.props;
+    if (mix.current) {
+      const scrollHandle1 = () => {
+        const isEnd =
+          mix.current.scrollLeft + mix.current.offsetWidth ==
+          mix.current.scrollWidth;
+        const isBegin = mix.current.scrollLeft == 0;
+        setPrev1(!isBegin);
+        setNext1(!isEnd);
+      };
+      scrollHandle1();
+      mix.current.addEventListener('scroll', scrollHandle1);
+    }
+    if (pick.current) {
+      const scrollHandle2 = () => {
+        const isEnd =
+          pick.current.scrollLeft + pick.current.offsetWidth ==
+          pick.current.scrollWidth;
+        const isBegin = pick.current.scrollLeft == 0;
+        setPrev2(!isBegin);
+        setNext2(!isEnd);
+      };
+      scrollHandle2();
+      pick.current.addEventListener('scroll', scrollHandle2);
+    }
+    if (mix.current && pick.current)
+      return () => {
+        mix?.current?.removeEventListener('scroll', scrollHandle1);
+        pick?.current?.removeEventListener('scroll', scrollHandle2);
+      };
+    else if (mix.current) {
+      return () => {
+        mix?.current?.removeEventListener('scroll', scrollHandle1);
+      };
+    } else if (pick.current) {
+      return () => {
+        pick?.current?.removeEventListener('scroll', scrollHandle2);
+      };
+    }
   };
 
   slideMixPrev1 = () => {
@@ -98,7 +98,7 @@ class HomeComponent extends Component {
 
   render() {
     const {
-      // mixeds,
+      mixeds,
       next1,
       prev1,
       mix,
@@ -113,7 +113,7 @@ class HomeComponent extends Component {
 
     return (
       <Box mx="45px" className={`${bottomBar ? 'mb-20' : ''}`}>
-        {/* <div className="mb-14">
+        <div className="mb-14">
           <Heading size="lg" pt="96px" pb="16px">
             Mixed for you
           </Heading>
@@ -208,7 +208,7 @@ class HomeComponent extends Component {
               ))}
             </ScrollContainer>
           </div>
-        </div> */}
+        </div>
         <div className="mb-14">
           <div className="pt-8 pb-4">
             <Text className="text-md text-[#AAA]">START RADIO FROM A SONG</Text>

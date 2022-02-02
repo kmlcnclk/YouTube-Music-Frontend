@@ -91,7 +91,7 @@ class HomeComponent extends Component {
   };
 
   getMusicFunc = async () => {
-    console.log(process.env.BACKEND_URL);
+    console.log(process.env);
     const res = await unfetch(`${process.env.BACKEND_URL}/music/get20Music`);
     const data = await res.json();
 

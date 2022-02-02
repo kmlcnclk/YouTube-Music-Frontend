@@ -12,8 +12,6 @@ export const CurrentMusicSlice = createSlice({
   reducers: {
     changeCurrentMusicAndMusicList: (state, action) => {
       state.musics = action.payload;
-    },
-    a: (state, action) => {
       state.music = action.payload[state.currentIndex];
     },
     changeCurrentMusic: (state, action) => {
@@ -27,7 +25,7 @@ export const CurrentMusicSlice = createSlice({
       } else {
         state.currentIndex = action.payload;
       }
-      state.music = state.musics[state.currentMusic];
+      state.music = state.musics[state.currentIndex];
     },
     changeCurrentMusicIndex: (state, action) => {},
     changeCurrentTime: (state, action) => {
@@ -46,7 +44,6 @@ export const {
   changeCurrentMusicAndMusicList,
   changeCurrentMusicIndex,
   changeCurrentIndex,
-  a,
 } = CurrentMusicSlice.actions;
 
 export default CurrentMusicSlice.reducer;

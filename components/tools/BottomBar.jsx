@@ -10,7 +10,6 @@ import { useRouter } from 'next/router';
 import Icon from '../../src/Icon';
 import moment from 'moment';
 import momentDurationFormatSetup from 'moment-duration-format';
-import { Box } from '@chakra-ui/react';
 import {
   Slider,
   SliderTrack,
@@ -27,7 +26,6 @@ function BottomBar() {
   const musicPlay = useSelector((state) => state.musicPlay.value);
   const currentMusic = useSelector((state) => state.currentMusic.music);
   const currentIndex = useSelector((state) => state.currentMusic.currentIndex);
-  const currentMusicList = useSelector((state) => state.currentMusic.musics);
   const [clickedTime, setClickedTime] = useState(null);
   const [dur, setDur] = useState(null);
   const [curTime, setCurTime] = useState(null);
@@ -35,8 +33,10 @@ function BottomBar() {
   const [volume2, setVolume2] = useState(30);
   const router = useRouter();
   const [curMus, setCurMus] = useState({});
+  const [audioState, setAudioState] = useState(true);
 
   const audioRef = useRef();
+  const barRef = useRef();
 
   const [likeState, setLikeState] = useState(false);
   const [unLikeState, setUnLikeState] = useState(false);
@@ -57,18 +57,21 @@ function BottomBar() {
       const setAudioData = () => {
         setDur(audioRef.current.duration);
       };
+
       const nextF = async () => {
         setClickedTime(null);
+
         setCurTime(0);
 
         if (audioRef.current.play()) {
           await audioRef.current.pause();
           await dispatch(falseChangeValueMusicPlay());
         }
-
+        setAudioState(false);
         await dispatch(changeCurrentIndex(currentIndex + 1));
 
         await setCurMus(currentMusic);
+        await setAudioState(true);
 
         audioRef.current.volume = volume / 100;
         audioRef.current.currentTime = 0;
@@ -103,7 +106,7 @@ function BottomBar() {
         setCurTime(audioRef.current.currentTime);
         setCurPercentage((curTime / dur) * 100);
 
-        if (audioRef.current.currentTime == audioRef.current.duration) {
+        if (audioRef.current.currentTime >= audioRef.current.duration - 0.4) {
           nextF();
         }
       };
@@ -120,10 +123,13 @@ function BottomBar() {
         audioRef.current.currentTime = clickedTime;
         setClickedTime(null);
       }
-      return () => {
-        audioRef.current.removeEventListener('loadeddata', setAudioData);
-        audioRef.current.removeEventListener('timeupdate', setAudioTime);
-      };
+
+      if (audioState) {
+        return () => {
+          audioRef?.current?.removeEventListener('loadeddata', setAudioData);
+          audioRef?.current?.removeEventListener('timeupdate', setAudioTime);
+        };
+      }
     }
   }, [
     router,
@@ -139,6 +145,8 @@ function BottomBar() {
     sa,
     volume,
     audioRef,
+    audioState,
+    setAudioState,
   ]);
 
   const musicMenuFunc = () => {
@@ -161,13 +169,17 @@ function BottomBar() {
   const prevFunc = async () => {
     setClickedTime(null);
     setCurTime(0);
+
     if (audioRef.current.play()) {
       audioRef.current.pause();
       await dispatch(falseChangeValueMusicPlay());
     }
+
+    setAudioState(false);
     await dispatch(changeCurrentIndex(currentIndex - 1));
 
     await setCurMus(currentMusic);
+    await setAudioState(true);
 
     audioRef.current.volume = volume / 100;
     audioRef.current.currentTime = 0;
@@ -204,9 +216,11 @@ function BottomBar() {
       await dispatch(falseChangeValueMusicPlay());
     }
 
+    setAudioState(false);
     await dispatch(changeCurrentIndex(currentIndex + 1));
 
     await setCurMus(currentMusic);
+    await setAudioState(true);
 
     audioRef.current.volume = volume / 100;
     audioRef.current.currentTime = 0;
@@ -237,18 +251,22 @@ function BottomBar() {
     }, 400);
   };
 
-  function calcClickedTime(e) {
+  async function calcClickedTime(e) {
     const clickPositionInPage = e.pageX;
-    const bar = document.querySelector('.bar__progress');
-    const barStart = bar.getBoundingClientRect().left + window.scrollX;
-    const barWidth = bar.offsetWidth;
-    const clickPositionInBar = clickPositionInPage - barStart;
-    const timePerPixel = dur / barWidth;
 
-    audioRef.current.currentTime = timePerPixel * clickPositionInBar;
-    curPercentage =
-      (audioRef.current.currentTime / audioRef.current.duration) * 100;
+    if (barRef.current) {
+      const barStart =
+        barRef.current.getBoundingClientRect().left + window.scrollX;
+      const barWidth = barRef.current.offsetWidth;
+      const clickPositionInBar = clickPositionInPage - barStart;
+      const timePerPixel = dur / barWidth;
+
+      audioRef.current.currentTime = timePerPixel * clickPositionInBar;
+      setCurTime(audioRef.current.currentTime);
+      setDur(audioRef.current.duration);
+    }
   }
+
   const handleTimeDrag = async (e) => {
     setSa(true);
     await calcClickedTime(e);
@@ -270,39 +288,29 @@ function BottomBar() {
         onMouseLeave={() => setSoundState(false)}
         className="w-full h-[72px] z-50 fixed bottom-0 bg-bottom-bar"
       >
-        {currentMusicList?.map((music, i) => (
-          <audio
-            id={currentIndex == i ? 'audio' : ''}
-            ref={currentIndex == i ? audioRef : null}
-            className={i == currentIndex ? 'block' : 'hidden'}
-            key={music._id}
-            crossOrigin="anonymous"
-          >
-            <source src={music?.song_url} />
+        {audioState ? (
+          <audio ref={audioRef} crossOrigin="anonymous">
+            <source src={currentMusic?.song_url} />
             YouTube Music <code>audio</code> Song
           </audio>
-        ))}
+        ) : null}
         {dur && curTime ? (
           <div className="bar">
             {curPercentage != null ? (
               <div>
-                {currentMusicList?.map((music, i) => (
-                  <div
-                    className={`h-[3px] hover:h-[4.5px] cursor-pointer transition-all fixed w-full flex ${
-                      currentIndex == i ? 'bar__progress block' : 'hidden'
-                    }`}
-                    style={{
-                      background: `linear-gradient(to right, #f00 ${curPercentage}%, #4c4c4c  0)`,
-                    }}
-                    onMouseDown={(e) => handleTimeDrag(e)}
-                    key={music._id}
-                  >
-                    <span
-                      className="bar__progress__knob w-3 h-3 rounded-full bg-[#f00] relative border-[1px] border-[#f00]"
-                      style={{ left: `${curPercentage - 0.5}%`, bottom: '4px' }}
-                    ></span>
-                  </div>
-                ))}
+                <div
+                  className={`h-[3px] hover:h-[4.5px] cursor-pointer transition-all fixed w-full flex`}
+                  ref={barRef}
+                  style={{
+                    background: `linear-gradient(to right, #f00 ${curPercentage}%, #4c4c4c  0)`,
+                  }}
+                  onMouseDown={(e) => handleTimeDrag(e)}
+                >
+                  <span
+                    className="bar__progress__knob w-3 h-3 rounded-full bg-[#f00] relative border-[1px] border-[#f00]"
+                    style={{ left: `${curPercentage - 0.5}%`, bottom: '4px' }}
+                  ></span>
+                </div>
               </div>
             ) : null}
           </div>
@@ -342,45 +350,47 @@ function BottomBar() {
                 className="cursor-pointer"
               />
             </div>
-            {currentMusicList?.map((music, i) => (
-              <div
-                className={`${currentIndex == i ? 'block' : 'hidden'}`}
-                key={music._id}
-              >
-                <p className="text-[#AAAAAA] text-xs">
-                  {formatDuration(curTime)} / {music.duration}
-                </p>
-              </div>
-            ))}
+            <div>
+              <p className="text-[#AAAAAA] text-xs">
+                {formatDuration(curTime)} / {currentMusic.duration}
+              </p>
+            </div>
           </div>
-          {currentMusicList?.map((music, i) => (
-            <div
-              className={`w-[766px] h-[72px] ${
-                currentIndex == i
-                  ? 'flex justify-between items-center'
-                  : 'hidden'
-              }`}
-              key={music._id}
-            >
-              <div className="w-1/12 h-[72px]" onClick={musicMenuFunc}></div>
-              <div className="w-auto h-[72px] flex justify-center items-center space-x-4">
-                <NextImage
-                  src={music?.image_url}
-                  alt={music?.name}
-                  width="40px"
-                  priority={true}
-                  height="40px"
-                  objectFit="contain"
-                />
-                <div>
-                  <p className="font-semibold text-white">{music?.name}</p>
-                  <div className="flex items-center space-x-1">
-                    <p className="font-semibold text-[#ffffffB3] hover:underline cursor-pointer truncate">
-                      {music?.album_or_single?.name}
-                    </p>
-                    <p className="text-[#ffffffB3] inline-block">&bull;</p>
-                    {music?.artists?.map((artist, i) => {
-                      if (music.artists.length == 1) {
+          <div
+            className={`w-[766px] h-[72px] flex justify-between items-center`}
+          >
+            <div className="w-1/12 h-[72px]" onClick={musicMenuFunc}></div>
+            <div className="w-auto h-[72px] flex justify-center items-center space-x-4">
+              <NextImage
+                src={currentMusic?.image_url}
+                alt={currentMusic?.name}
+                width="40px"
+                priority={true}
+                height="40px"
+                objectFit="contain"
+              />
+              <div>
+                <p className="font-semibold text-white">{currentMusic?.name}</p>
+                <div className="flex items-center space-x-1">
+                  <p className="font-semibold text-[#ffffffB3] hover:underline cursor-pointer truncate">
+                    {currentMusic?.album_or_single?.name}
+                  </p>
+                  <p className="text-[#ffffffB3] inline-block">&bull;</p>
+                  {currentMusic?.artists?.map((artist, i) => {
+                    if (currentMusic.artists.length == 1) {
+                      return (
+                        <p
+                          className="font-semibold text-[#ffffffB3] hover:underline cursor-pointer truncate"
+                          key={i}
+                        >
+                          {artist.name}
+                        </p>
+                      );
+                    } else if (currentMusic.artists.length > 1) {
+                      if (
+                        currentMusic.artists[currentMusic.artists.length - 1] ==
+                        artist
+                      ) {
                         return (
                           <p
                             className="font-semibold text-[#ffffffB3] hover:underline cursor-pointer truncate"
@@ -389,71 +399,60 @@ function BottomBar() {
                             {artist.name}
                           </p>
                         );
-                      } else if (music.artists.length > 1) {
-                        if (music.artists[music.artists.length - 1] == artist) {
-                          return (
-                            <p
-                              className="font-semibold text-[#ffffffB3] hover:underline cursor-pointer truncate"
-                              key={i}
-                            >
+                      } else {
+                        return (
+                          <div className="flex" key={i}>
+                            <p className="font-semibold text-[#ffffffB3] hover:underline cursor-pointer truncate">
                               {artist.name}
                             </p>
-                          );
-                        } else {
-                          return (
-                            <div className="flex" key={i}>
-                              <p className="font-semibold text-[#ffffffB3] hover:underline cursor-pointer truncate">
-                                {artist.name}
-                              </p>
-                              <p className="ml-1 text-[#ffffffB3] font-semibold">
-                                &
-                              </p>
-                            </div>
-                          );
-                        }
+                            <p className="ml-1 text-[#ffffffB3] font-semibold">
+                              &
+                            </p>
+                          </div>
+                        );
                       }
-                    })}
-                    <p className="text-[#ffffffB3] inline-block">&bull;</p>
-                    <p className="font-semibold text-[#ffffffB3] hover:underline cursor-pointer">
-                      {music?.publicationYear}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <div
-                    className="rounded-full w-10 h-10 hover:bg-[#121212] flex items-center justify-center transition-all cursor-pointer"
-                    onClick={() => {
-                      setUnLikeState(!unLikeState);
-                      setLikeState(false);
-                    }}
-                  >
-                    {unLikeState ? (
-                      <Icon name="fillUnLike" size={24} />
-                    ) : (
-                      <Icon name="unFillUnLike" size={24} />
-                    )}
-                  </div>
-                  <div
-                    className="rounded-full w-10 h-10 hover:bg-[#121212] flex items-center justify-center transition-all cursor-pointer"
-                    onClick={() => {
-                      setLikeState(!likeState);
-                      setUnLikeState(false);
-                    }}
-                  >
-                    {likeState ? (
-                      <Icon name="fillLike" size={24} />
-                    ) : (
-                      <Icon name="unFillLike" size={24} />
-                    )}
-                  </div>
-                  <div className="rounded-full w-10 h-10 hover:bg-[#121212] flex items-center justify-center transition-all cursor-pointer">
-                    <Icon name="moreVert" size={24} color="#909090" />
-                  </div>
+                    }
+                  })}
+                  <p className="text-[#ffffffB3] inline-block">&bull;</p>
+                  <p className="font-semibold text-[#ffffffB3] hover:underline cursor-pointer">
+                    {currentMusic?.publicationYear}
+                  </p>
                 </div>
               </div>
-              <div className="w-1/12 h-[72px]" onClick={musicMenuFunc}></div>
+              <div className="flex items-center space-x-2">
+                <div
+                  className="rounded-full w-10 h-10 hover:bg-[#121212] flex items-center justify-center transition-all cursor-pointer"
+                  onClick={() => {
+                    setUnLikeState(!unLikeState);
+                    setLikeState(false);
+                  }}
+                >
+                  {unLikeState ? (
+                    <Icon name="fillUnLike" size={24} />
+                  ) : (
+                    <Icon name="unFillUnLike" size={24} />
+                  )}
+                </div>
+                <div
+                  className="rounded-full w-10 h-10 hover:bg-[#121212] flex items-center justify-center transition-all cursor-pointer"
+                  onClick={() => {
+                    setLikeState(!likeState);
+                    setUnLikeState(false);
+                  }}
+                >
+                  {likeState ? (
+                    <Icon name="fillLike" size={24} />
+                  ) : (
+                    <Icon name="unFillLike" size={24} />
+                  )}
+                </div>
+                <div className="rounded-full w-10 h-10 hover:bg-[#121212] flex items-center justify-center transition-all cursor-pointer">
+                  <Icon name="moreVert" size={24} color="#909090" />
+                </div>
+              </div>
             </div>
-          ))}
+            <div className="w-1/12 h-[72px]" onClick={musicMenuFunc}></div>
+          </div>
 
           <div className="w-[292px] h-[72px] flex justify-end items-center pr-3">
             <div className="justify-center items-center flex mr-1">

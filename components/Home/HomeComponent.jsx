@@ -10,10 +10,7 @@ import {
   falseChangeValueMusicPlay,
 } from '../../store/musicPlaySlice';
 import { changeValueMusicID } from '../../store/musicIDSlice';
-import {
-  changeCurrentMusicAndMusicList,
-  a,
-} from '../../store/currentMusicSlice';
+import { changeCurrentMusicAndMusicList } from '../../store/currentMusicSlice';
 import unfetch from 'isomorphic-unfetch';
 
 class HomeComponent extends Component {
@@ -99,7 +96,6 @@ class HomeComponent extends Component {
     if (data) {
       if (data.success) {
         this.props.dispatch(changeCurrentMusicAndMusicList(data.data.musics));
-        this.props.dispatch(a(data.data.musics));
       }
     }
   };

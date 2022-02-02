@@ -1,4 +1,4 @@
-# YouTube Music Backend
+# YouTube Music Frontend
 
 #### [You can click here for the link to the frontend.](https://youtube-music-frontend.vercel.app/)
 

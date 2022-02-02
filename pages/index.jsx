@@ -25,7 +25,7 @@ export default function Home({ dt }) {
   const [mixeds, setMixeds] = useState({});
 
   const { data } = useSWR(
-    [`${process.env.BACKEND_URL}/homePage/mixed`, 'GET'],
+    [`${process.env.NEXT_PUBLIC_BACKEND_URL}/homePage/mixed`, 'GET'],
     {
       fallbackData: dt,
     }
@@ -72,7 +72,9 @@ export default function Home({ dt }) {
 }
 
 Home.getInitialProps = async (ctx) => {
-  const res = await unFetch(`${process.env.BACKEND_URL}/homePage/mixed`);
+  const res = await unFetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/homePage/mixed`
+  );
 
   const dt = await res.json();
 

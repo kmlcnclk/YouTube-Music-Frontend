@@ -1,6 +1,6 @@
 # YouTube Music Frontend
 
-#### [You can click here for the link to the frontend.](https://youtube-music-frontend.vercel.app/)
+#### [You can click here for the link to the Frontend.](https://youtube-music-frontend.vercel.app/)
 
 ### I used these technologies while doing this project
 

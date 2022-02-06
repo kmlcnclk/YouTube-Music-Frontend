@@ -38,7 +38,7 @@ export default function Home({ dt }) {
   }, [setMixeds, data]);
 
   return (
-    <Box className="bg-black text-white">
+    <Box className="bg-black text-white overflow-x-hidden">
       <Head>
         <title>Youtube Music</title>
         <meta name="description" content="Youtube Music" />

@@ -578,6 +578,9 @@ function BottomBar() {
             volume,
             clickedTime,
             curTime,
+            setAudioState,
+            setCurPercentage,
+            dur,
           }}
         />
       ) : null}

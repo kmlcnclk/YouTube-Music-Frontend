@@ -22,6 +22,9 @@ function MusicMenu({
   volume,
   clickedTime,
   curTime,
+  setAudioState,
+  setCurPercentage,
+  dur,
 }) {
   const musicMenu = useSelector((state) => state.musicMenu.value);
   const currentMusic = useSelector((state) => state.currentMusic.music);
@@ -29,26 +32,38 @@ function MusicMenu({
   const currentIndex = useSelector((state) => state.currentMusic.currentIndex);
 
   const [menuState, setMenuState] = useState('Up Next');
+  const [lyrics, setLyrics] = useState([]);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     setMS(musicMenu);
-  }, [setMS, musicMenu]);
+
+    if (currentMusic?.lyrics) {
+      setLyrics(JSON.stringify(currentMusic?.lyrics).split('\\n'));
+    } else {
+      setLyrics([]);
+    }
+  }, [setMS, musicMenu, setLyrics, currentMusic]);
 
   const changeMusic = async (i) => {
     setClickedTime(null);
     setCurTime(0);
+
     if (audioRef.current.play()) {
-      audioRef.current.pause();
+      await audioRef.current.pause();
       await dispatch(falseChangeValueMusicPlay());
     }
-    await dispatch(changeCurrentIndex(currentIndex - 1));
+
+    setAudioState(false);
+    await dispatch(changeCurrentIndex(currentIndex + 1));
 
     await setCurMus(currentMusic);
+    await setAudioState(true);
 
     audioRef.current.volume = volume / 100;
     audioRef.current.currentTime = 0;
+
     const setAudioData = () => {
       setDur(audioRef.current.duration);
       setCurTime(audioRef.current.currentTime);
@@ -66,6 +81,8 @@ function MusicMenu({
       audioRef.current.currentTime = clickedTime;
       setClickedTime(null);
     }
+
+    setCurPercentage((curTime / dur) * 100);
 
     setTimeout(() => {
       audioRef.current.play();
@@ -183,6 +200,36 @@ function MusicMenu({
                     <p className="text-[#a4a4a4] text-sm">{music?.duration}</p>
                   </Flex>
                 ))}
+              </div>
+            ) : null}
+            {menuState == 'Lyrics' && currentMusic.lyrics ? (
+              <div className="overflow-y-auto h-[400px] py-5 ml-10">
+                {lyrics?.map((lyric, i) => {
+                  if (lyric == '') {
+                    return <br key={i} />;
+                  } else if (i == 0) {
+                    return (
+                      <p className="text-white font-semibold text-sm" key={i}>
+                        {lyric.replace('"', '')}
+                      </p>
+                    );
+                  } else if (i == lyrics.length - 1) {
+                    return (
+                      <p className="text-white font-semibold text-sm" key={i}>
+                        {lyric.replace('"', '')}
+                      </p>
+                    );
+                  } else {
+                    return (
+                      <p className="text-white font-semibold text-sm" key={i}>
+                        {lyric}
+                      </p>
+                    );
+                  }
+                })}
+                <p className="text-[#aaa] text-sm font-semibold mt-4">
+                  Source {currentMusic?.lyricSource}
+                </p>
               </div>
             ) : null}
           </div>

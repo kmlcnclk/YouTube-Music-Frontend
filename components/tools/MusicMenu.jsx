@@ -135,18 +135,26 @@ function MusicMenu({
               >
                 <p>UP NEXT</p>
               </button>
-              <button
-                className={`text-white font-semibold text-sm py-4 px-10 w-[150px] transition-all" ${
-                  menuState == 'Lyrics'
-                    ? 'border-b-[1px] border-b-white'
-                    : 'border-b-[1px] border-b-[#1d1d1d]'
-                }`}
-                onClick={() => {
-                  setMenuState('Lyrics');
-                }}
-              >
-                <p>LYRICS</p>
-              </button>
+              {currentMusic?.lyrics ? (
+                <button
+                  className={`text-white font-semibold text-sm py-4 px-10 w-[150px] transition-all" ${
+                    menuState == 'Lyrics'
+                      ? 'border-b-[1px] border-b-white'
+                      : 'border-b-[1px] border-b-[#1d1d1d]'
+                  }`}
+                  onClick={() => {
+                    setMenuState('Lyrics');
+                  }}
+                >
+                  <p>LYRICS</p>
+                </button>
+              ) : (
+                <button
+                  className={`text-[#4b4b4b] font-semibold text-sm py-4 px-10 w-[150px] border-b-[1px] border-b-[#1d1d1d]`}
+                >
+                  <p>LYRICS</p>
+                </button>
+              )}
               <button
                 className={`text-white font-semibold text-sm py-4 px-10 w-[150px] transition-all" ${
                   menuState == 'Related'
@@ -228,7 +236,7 @@ function MusicMenu({
                   }
                 })}
                 <p className="text-[#aaa] text-sm font-semibold mt-4">
-                  Source {currentMusic?.lyricSource}
+                  Source: {currentMusic?.lyricSource}
                 </p>
               </div>
             ) : null}

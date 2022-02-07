@@ -21,6 +21,10 @@ import {
   ShuffleIcon,
   TopDirectionIcon,
   BottomDirectionIcon,
+  NewReleasesIcon,
+  ChartsIcon,
+  MoodsAndGenresIcon,
+  PointIcon,
 } from './Icons';
 
 const Icon = ({ name, size, height, width, onClickFunc, color, className }) => {
@@ -47,6 +51,10 @@ const Icon = ({ name, size, height, width, onClickFunc, color, className }) => {
     shuffle: ShuffleIcon,
     topDirection: TopDirectionIcon,
     bottomDirection: BottomDirectionIcon,
+    newReleases: NewReleasesIcon,
+    charts: ChartsIcon,
+    moodsAndGenres: MoodsAndGenresIcon,
+    point: PointIcon,
   };
 
   const Component = icons[name];

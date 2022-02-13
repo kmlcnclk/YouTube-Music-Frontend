@@ -75,18 +75,18 @@ class ExploreComponent extends Component {
       trendingRef.current.addEventListener('scroll', this.scrollHandle4);
     }
 
-    // return () => {
-    //   albumsAndSinglesRef?.current?.removeEventListener(
-    //     'scroll',
-    //     this.scrollHandle1
-    //   );
-    //   topSongsRef?.current?.removeEventListener('scroll', this.scrollHandle2);
-    //   moodsAndGenresRef?.current?.removeEventListener(
-    //     'scroll',
-    //     this.scrollHandle3
-    //   );
-    //   trendingRef?.current?.removeEventListener('scroll', this.scrollHandle4);
-    // };
+    return () => {
+      albumsAndSinglesRef?.current?.removeEventListener(
+        'scroll',
+        this.scrollHandle1
+      );
+      topSongsRef?.current?.removeEventListener('scroll', this.scrollHandle2);
+      moodsAndGenresRef?.current?.removeEventListener(
+        'scroll',
+        this.scrollHandle3
+      );
+      trendingRef?.current?.removeEventListener('scroll', this.scrollHandle4);
+    };
   };
 
   slideAlbumsAndSinglesPrev1 = () => {

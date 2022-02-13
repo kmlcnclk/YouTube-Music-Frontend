@@ -51,7 +51,7 @@ class ExploreComponent extends Component {
     setPrev4(!isBegin);
     setNext4(!isEnd);
   };
-  componentDidMount = () => {
+  componentDidMount() {
     const { albumsAndSinglesRef, topSongsRef, moodsAndGenresRef, trendingRef } =
       this.props;
 
@@ -87,7 +87,7 @@ class ExploreComponent extends Component {
       );
       trendingRef?.current?.removeEventListener('scroll', this.scrollHandle4);
     };
-  };
+  }
 
   slideAlbumsAndSinglesPrev1 = () => {
     this.props.albumsAndSinglesRef.current.scrollLeft -=

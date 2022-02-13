@@ -414,7 +414,7 @@ class ExploreComponent extends Component {
               </ScrollContainer>
             </div>
           </div>
-          <div className="mt-28">
+          {/* <div className="mt-28">
             <div className="flex items-end">
               <p className="text-white font-bold text-3xl ">Moods & genres</p>
               <p className="text-[#aaa] ml-9 font-semibold text-sm">SEE ALL</p>
@@ -455,7 +455,7 @@ class ExploreComponent extends Component {
                 ))}
               </ScrollContainer>
             </div>
-          </div>
+          </div> */}
           <div className="mt-28 mb-36">
             <div className="flex items-end">
               <p className="text-white font-bold text-3xl ">Trending</p>

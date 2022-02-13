@@ -581,7 +581,7 @@ class ExploreComponent extends Component {
                   </div>
                 ))}
               </ScrollContainer>
-            </div>{' '}
+            </div>
           </div>
         </div>
       </div>

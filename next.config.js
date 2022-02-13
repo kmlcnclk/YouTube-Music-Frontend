@@ -4,7 +4,7 @@ module.exports = (phase, { defaultConfig }) => {
   return {
     reactStrictMode: false,
     images: {
-      domains: ['youtube-music-backend.herokuapp.com'],
+      domains: ['youtube-music-backend.herokuapp.com', 'res.cloudinary.com'],
     },
   };
 };

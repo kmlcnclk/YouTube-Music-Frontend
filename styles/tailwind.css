@@ -16,6 +16,9 @@
   .scroll-container-2 {
     @apply flex mt-3 scroll-smooth flex-wrap flex-col h-[256px];
   }
+  .scroll-container-3 {
+    @apply flex mt-3 scroll-smooth flex-wrap flex-col h-[256px];
+  }
   .scroll-item {
     @apply relative flex-shrink-0 transition-all;
   }
@@ -36,6 +39,15 @@
     @apply -right-5;
   }
   .prev-navigate-2 {
+    @apply -left-5;
+  }
+  .navigate-3 {
+    @apply absolute z-10 top-[120px] bg-white h-10 w-10 drop-shadow-lg -translate-y-1/2 text-black flex justify-center items-center rounded-full;
+  }
+  .next-navigate-3 {
+    @apply -right-5;
+  }
+  .prev-navigate-3 {
     @apply -left-5;
   }
 

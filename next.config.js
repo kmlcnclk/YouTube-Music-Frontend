@@ -6,6 +6,5 @@ module.exports = (phase, { defaultConfig }) => {
     images: {
       domains: ['youtube-music-backend.herokuapp.com', 'res.cloudinary.com'],
     },
-    presets: ['next/babel'],
   };
 };

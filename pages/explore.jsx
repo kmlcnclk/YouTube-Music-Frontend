@@ -26,15 +26,15 @@ function Explore({ dt, dtMood, dtGenre }) {
   const moodsAndGenresRef = useRef();
   const trendingRef = useRef();
 
-  useEffect(() => {
-    if (dt) {
-      setAlbumsAndSingles(dt);
-    }
+  // useEffect(() => {
+  //   if (dt) {
+  //     setAlbumsAndSingles(dt);
+  //   }
 
-    if (dtMood?.success && dtGenre?.success) {
-      setMoodsAndGenres([...dtMood.data, ...dtGenre.data]);
-    }
-  }, [setAlbumsAndSingles, dt, dtGenre, dtMood, setMoodsAndGenres]);
+  //   if (dtMood?.success && dtGenre?.success) {
+  //     setMoodsAndGenres([...dtMood.data, ...dtGenre.data]);
+  //   }
+  // }, [setAlbumsAndSingles, dt, dtGenre, dtMood, setMoodsAndGenres]);
 
   return (
     <Box className="bg-black text-white">
@@ -78,30 +78,30 @@ function Explore({ dt, dtMood, dtGenre }) {
   );
 }
 
-Explore.getInitialProps = async (ctx) => {
-  const resAlbumAndSingle = await unfetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/explore/exploreNewAlbumsAndSinglesGet`
-  );
+// Explore.getInitialProps = async (ctx) => {
+//   const resAlbumAndSingle = await unfetch(
+//     `${process.env.NEXT_PUBLIC_BACKEND_URL}/explore/exploreNewAlbumsAndSinglesGet`
+//   );
 
-  const dataAlbumAndSingle = await resAlbumAndSingle.json();
+//   const dataAlbumAndSingle = await resAlbumAndSingle.json();
 
-  const resMood = await unfetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/mood/all`
-  );
+//   const resMood = await unfetch(
+//     `${process.env.NEXT_PUBLIC_BACKEND_URL}/mood/all`
+//   );
 
-  const dtMood = await resMood.json();
+//   const dtMood = await resMood.json();
 
-  const resGenre = await unfetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/genre/all`
-  );
+//   const resGenre = await unfetch(
+//     `${process.env.NEXT_PUBLIC_BACKEND_URL}/genre/all`
+//   );
 
-  const dtGenre = await resGenre.json();
+//   const dtGenre = await resGenre.json();
 
-  return {
-    dt: dataAlbumAndSingle,
-    dtMood,
-    dtGenre,
-  };
-};
+//   return {
+//     dt: dataAlbumAndSingle,
+//     dtMood,
+//     dtGenre,
+//   };
+// };
 
 export default Explore;

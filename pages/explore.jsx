@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { Box } from '@chakra-ui/react';
 import Header from '../components/Header';
-import ExploreComponent from '../components/ExploreComponent';
+// import ExploreComponent from '../components/ExploreComponent';
 import { useEffect, useRef, useState } from 'react';
 import unfetch from 'isomorphic-unfetch';
 import { useSelector } from 'react-redux';
@@ -44,7 +44,7 @@ function Explore({ dt, dtMood, dtGenre }) {
         <link rel="icon" href="/ym.png" />
       </Head>
       <Header />
-      {albumsAndSingles && albumsAndSingles.success && moodsAndGenres[0] ? (
+      {/* {albumsAndSingles && albumsAndSingles.success && moodsAndGenres[0] ? (
         <ExploreComponent
           {...{
             prev1,
@@ -73,7 +73,7 @@ function Explore({ dt, dtMood, dtGenre }) {
             trendingRef,
           }}
         />
-      ) : null}
+      ) : null} */}
     </Box>
   );
 }

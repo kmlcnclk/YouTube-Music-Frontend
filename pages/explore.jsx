@@ -31,7 +31,7 @@ function Explore({ dt, dtMood, dtGenre }) {
       setAlbumsAndSingles(dt);
     }
 
-    if (dtMood.success && dtGenre.success) {
+    if (dtMood?.success && dtGenre?.success) {
       setMoodsAndGenres([...dtMood.data, ...dtGenre.data]);
     }
   }, [setAlbumsAndSingles, dt, dtGenre, dtMood, setMoodsAndGenres]);

@@ -51,43 +51,43 @@ class ExploreComponent extends Component {
     setPrev4(!isBegin);
     setNext4(!isEnd);
   };
-  // componentDidMount() {
-  //   const { albumsAndSinglesRef, topSongsRef, moodsAndGenresRef, trendingRef } =
-  //     this.props;
+  componentDidMount() {
+    const { albumsAndSinglesRef, topSongsRef, moodsAndGenresRef, trendingRef } =
+      this.props;
 
-  //   if (albumsAndSinglesRef?.current) {
-  //     this.scrollHandle1();
-  //     albumsAndSinglesRef.current.addEventListener(
-  //       'scroll',
-  //       this.scrollHandle1
-  //     );
-  //   }
-  //   if (topSongsRef?.current) {
-  //     this.scrollHandle2();
-  //     topSongsRef.current.addEventListener('scroll', this.scrollHandle2);
-  //   }
-  //   if (moodsAndGenresRef?.current) {
-  //     this.scrollHandle3();
-  //     moodsAndGenresRef.current.addEventListener('scroll', this.scrollHandle3);
-  //   }
-  //   if (trendingRef?.current) {
-  //     this.scrollHandle4();
-  //     trendingRef.current.addEventListener('scroll', this.scrollHandle4);
-  //   }
+    if (albumsAndSinglesRef?.current) {
+      this.scrollHandle1();
+      albumsAndSinglesRef.current.addEventListener(
+        'scroll',
+        this.scrollHandle1
+      );
+    }
+    if (topSongsRef?.current) {
+      this.scrollHandle2();
+      topSongsRef.current.addEventListener('scroll', this.scrollHandle2);
+    }
+    if (moodsAndGenresRef?.current) {
+      this.scrollHandle3();
+      moodsAndGenresRef.current.addEventListener('scroll', this.scrollHandle3);
+    }
+    if (trendingRef?.current) {
+      this.scrollHandle4();
+      trendingRef.current.addEventListener('scroll', this.scrollHandle4);
+    }
 
-  //   return () => {
-  //     albumsAndSinglesRef?.current?.removeEventListener(
-  //       'scroll',
-  //       this.scrollHandle1
-  //     );
-  //     topSongsRef?.current?.removeEventListener('scroll', this.scrollHandle2);
-  //     moodsAndGenresRef?.current?.removeEventListener(
-  //       'scroll',
-  //       this.scrollHandle3
-  //     );
-  //     trendingRef?.current?.removeEventListener('scroll', this.scrollHandle4);
-  //   };
-  // }
+    return () => {
+      albumsAndSinglesRef?.current?.removeEventListener(
+        'scroll',
+        this.scrollHandle1
+      );
+      topSongsRef?.current?.removeEventListener('scroll', this.scrollHandle2);
+      moodsAndGenresRef?.current?.removeEventListener(
+        'scroll',
+        this.scrollHandle3
+      );
+      trendingRef?.current?.removeEventListener('scroll', this.scrollHandle4);
+    };
+  }
 
   slideAlbumsAndSinglesPrev1 = () => {
     this.props.albumsAndSinglesRef.current.scrollLeft -=
@@ -155,7 +155,7 @@ class ExploreComponent extends Component {
 
     return (
       <div className="bg-black mx-[45px] pt-16">
-        {/* <div className="flex justify-center items-center mt-9 space-x-6">
+        <div className="flex justify-center items-center mt-9 space-x-6">
           <div className="bg-[#292929] w-[405.33px] h-[56px] px-6 rounded-md flex items-center hover:bg-[#212121] transition-all cursor-pointer">
             <Icon name="newReleases" color="#aaa" size={24} />
             <p className="text-white font-bold text-xl ml-5">New releases</p>
@@ -583,7 +583,7 @@ class ExploreComponent extends Component {
               </ScrollContainer>
             </div>
           </div>
-        </div> */}
+        </div>
       </div>
     );
   }

@@ -155,7 +155,7 @@ class ExploreComponent extends Component {
 
     return (
       <div className="bg-black mx-[45px] pt-16">
-        <div className="flex justify-center items-center mt-9 space-x-6">
+        {/* <div className="flex justify-center items-center mt-9 space-x-6">
           <div className="bg-[#292929] w-[405.33px] h-[56px] px-6 rounded-md flex items-center hover:bg-[#212121] transition-all cursor-pointer">
             <Icon name="newReleases" color="#aaa" size={24} />
             <p className="text-white font-bold text-xl ml-5">New releases</p>
@@ -583,7 +583,7 @@ class ExploreComponent extends Component {
               </ScrollContainer>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     );
   }

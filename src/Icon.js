@@ -25,6 +25,7 @@ import {
   ChartsIcon,
   MoodsAndGenresIcon,
   PointIcon,
+  SeeAllIcon,
 } from './Icons';
 
 const Icon = ({ name, size, height, width, onClickFunc, color, className }) => {
@@ -55,6 +56,7 @@ const Icon = ({ name, size, height, width, onClickFunc, color, className }) => {
     charts: ChartsIcon,
     moodsAndGenres: MoodsAndGenresIcon,
     point: PointIcon,
+    seeAll: SeeAllIcon,
   };
 
   const Component = icons[name];

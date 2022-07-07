@@ -4,9 +4,9 @@ import Header from '../components/Header';
 import ExploreComponent from '../components/ExploreComponent';
 import { useEffect, useRef, useState } from 'react';
 import unfetch from 'isomorphic-unfetch';
-import { useSelector,useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import BottomBar from '../components/tools/BottomBar';
-
+import Layout from '../components/Layout';
 
 function Explore({ dt, dtMood, dtGenre }) {
   const [prev1, setPrev1] = useState(false);
@@ -25,7 +25,7 @@ function Explore({ dt, dtMood, dtGenre }) {
   const currentMusicList = useSelector((state) => state.currentMusic.musics);
   const musicID = useSelector((state) => state.musicID.value);
 
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
 
   const albumsAndSinglesRef = useRef();
   const topSongsRef = useRef();
@@ -43,7 +43,7 @@ function Explore({ dt, dtMood, dtGenre }) {
   }, [setAlbumsAndSingles, dt, dtGenre, dtMood, setMoodsAndGenres]);
 
   return (
-    <Box className="bg-black text-white">
+    <Layout className="bg-black text-white" title="Youtube Music">
       <Head>
         <title>Youtube Music</title>
         <meta name="description" content="Youtube Music" />
@@ -81,9 +81,8 @@ function Explore({ dt, dtMood, dtGenre }) {
           }}
         />
       ) : null}
-      {bottomBar && currentMusicList[0] ? <BottomBar /> : null}
-
-    </Box>
+      {/* {bottomBar && currentMusicList[0] ? <BottomBar /> : null} */}
+    </Layout>
   );
 }
 

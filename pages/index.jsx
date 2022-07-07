@@ -7,6 +7,7 @@ import useSWR from 'swr';
 import unFetch from 'isomorphic-unfetch';
 import { useSelector, useDispatch } from 'react-redux';
 import BottomBar from '../components/tools/BottomBar';
+import Layout from '../components/Layout';
 
 export default function Home({ dt }) {
   const bottomBar = useSelector((state) => state.bottomBar.value);
@@ -38,7 +39,10 @@ export default function Home({ dt }) {
   }, [setMixeds, data]);
 
   return (
-    <Box className="bg-black text-white overflow-x-hidden">
+    <Layout
+      className="bg-black text-white overflow-x-hidden"
+      title="Youtube Music"
+    >
       <Head>
         <title>Youtube Music</title>
         <meta name="description" content="Youtube Music" />
@@ -66,8 +70,8 @@ export default function Home({ dt }) {
           }}
         />
       ) : null}
-      {bottomBar && currentMusicList[0] ? <BottomBar /> : null}
-    </Box>
+      {/* {bottomBar && currentMusicList[0] ? <BottomBar /> : null} */}
+    </Layout>
   );
 }
 

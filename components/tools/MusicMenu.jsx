@@ -4,6 +4,9 @@ import { Box, Flex } from '@chakra-ui/react';
 import {
   changeCurrentMusic,
   changeCurrentIndex,
+  changeCurrentTime,
+  changeDuration,
+  changeCurrentPercentage,
 } from '../../store/currentMusicSlice';
 import {
   falseChangeValueMusicPlay,
@@ -15,21 +18,18 @@ function MusicMenu({
   setClickedTime,
   setMS,
   ms,
-  setCurTime,
   setCurMus,
   audioRef,
-  setDur,
   volume,
   clickedTime,
-  curTime,
   setAudioState,
-  setCurPercentage,
-  dur,
 }) {
   const musicMenu = useSelector((state) => state.musicMenu.value);
   const currentMusic = useSelector((state) => state.currentMusic.music);
   const currentMusicList = useSelector((state) => state.currentMusic.musics);
   const currentIndex = useSelector((state) => state.currentMusic.currentIndex);
+  const currentTime = useSelector((state) => state.currentMusic.currentTime);
+  const duration = useSelector((state) => state.currentMusic.duration);
 
   const [menuState, setMenuState] = useState('Up Next');
   const [lyrics, setLyrics] = useState([]);
@@ -48,7 +48,6 @@ function MusicMenu({
 
   const changeMusic = async (i) => {
     setClickedTime(null);
-    setCurTime(0);
 
     if (audioRef.current.play()) {
       await audioRef.current.pause();
@@ -65,24 +64,24 @@ function MusicMenu({
     audioRef.current.currentTime = 0;
 
     const setAudioData = () => {
-      setDur(audioRef.current.duration);
-      setCurTime(audioRef.current.currentTime);
+      dispatch(changeDuration(audioRef.current.duration));
+      dispatch(changeCurrentTime(audioRef.current.currentTime));
     };
 
     const setAudioTime = () => {
-      setCurTime(audioRef.current.currentTime);
+      dispatch(changeCurrentTime(audioRef.current.currentTime));
     };
 
     audioRef.current.addEventListener('loadeddata', setAudioData);
 
     audioRef.current.addEventListener('timeupdate', setAudioTime);
 
-    if (clickedTime && clickedTime !== curTime) {
+    if (clickedTime && clickedTime !== currentTime) {
       audioRef.current.currentTime = clickedTime;
       setClickedTime(null);
     }
 
-    setCurPercentage((curTime / dur) * 100);
+    dispatch(changeCurrentPercentage((currentTime / duration) * 100));
 
     setTimeout(() => {
       audioRef.current.play();

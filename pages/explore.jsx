@@ -4,7 +4,9 @@ import Header from '../components/Header';
 import ExploreComponent from '../components/ExploreComponent';
 import { useEffect, useRef, useState } from 'react';
 import unfetch from 'isomorphic-unfetch';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
+import BottomBar from '../components/tools/BottomBar';
+
 
 function Explore({ dt, dtMood, dtGenre }) {
   const [prev1, setPrev1] = useState(false);
@@ -19,7 +21,11 @@ function Explore({ dt, dtMood, dtGenre }) {
   const [moodsAndGenres, setMoodsAndGenres] = useState([]);
 
   const musicPlay = useSelector((state) => state.musicPlay.value);
+  const bottomBar = useSelector((state) => state.bottomBar.value);
+  const currentMusicList = useSelector((state) => state.currentMusic.musics);
   const musicID = useSelector((state) => state.musicID.value);
+
+  const dispatch=useDispatch()
 
   const albumsAndSinglesRef = useRef();
   const topSongsRef = useRef();
@@ -71,9 +77,12 @@ function Explore({ dt, dtMood, dtGenre }) {
             moodsAndGenresRef,
             moodsAndGenres,
             trendingRef,
+            dispatch,
           }}
         />
       ) : null}
+      {bottomBar && currentMusicList[0] ? <BottomBar /> : null}
+
     </Box>
   );
 }

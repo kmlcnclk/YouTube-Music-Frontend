@@ -6,8 +6,10 @@ export const CurrentMusicSlice = createSlice({
     musics: [],
     music: {},
     currentTime: 0,
-    duration: 0,
+    duration: null,
     currentIndex: 0,
+    currentPercentage: null,
+    volume: 30,
   },
   reducers: {
     changeCurrentMusicAndMusicList: (state, action) => {
@@ -34,6 +36,12 @@ export const CurrentMusicSlice = createSlice({
     changeDuration: (state, action) => {
       state.duration = action.payload;
     },
+    changeCurrentPercentage: (state, action) => {
+      state.currentPercentage = action.payload;
+    },
+    changeVolume: (state, action) => {
+      state.volume = action.payload;
+    },
   },
 });
 
@@ -44,6 +52,8 @@ export const {
   changeCurrentMusicAndMusicList,
   changeCurrentMusicIndex,
   changeCurrentIndex,
+  changeCurrentPercentage,
+  changeVolume,
 } = CurrentMusicSlice.actions;
 
 export default CurrentMusicSlice.reducer;

@@ -17,19 +17,30 @@ import {
   SliderThumb,
 } from '@chakra-ui/react';
 import MusicMenu from './MusicMenu';
-import { changeCurrentIndex } from '../../store/currentMusicSlice';
+import {
+  changeCurrentIndex,
+  changeCurrentTime,
+  changeDuration,
+  changeCurrentPercentage,
+  changeVolume,
+} from '../../store/currentMusicSlice';
 import NextImage from 'next/image';
 
 function BottomBar() {
   const dispatch = useDispatch();
+
   const musicMenu = useSelector((state) => state.musicMenu.value);
   const musicPlay = useSelector((state) => state.musicPlay.value);
   const currentMusic = useSelector((state) => state.currentMusic.music);
+  const currentTime = useSelector((state) => state.currentMusic.currentTime);
   const currentIndex = useSelector((state) => state.currentMusic.currentIndex);
+  const duration = useSelector((state) => state.currentMusic.duration);
+  const volume = useSelector((state) => state.currentMusic.volume);
+
+  const currentPercentage = useSelector(
+    (state) => state.currentMusic.currentPercentage
+  );
   const [clickedTime, setClickedTime] = useState(null);
-  const [dur, setDur] = useState(null);
-  const [curTime, setCurTime] = useState(null);
-  const [volume, setVolume] = useState(30);
   const [volume2, setVolume2] = useState(30);
   const router = useRouter();
   const [curMus, setCurMus] = useState({});
@@ -44,24 +55,28 @@ function BottomBar() {
   const [soundState, setSoundState] = useState(false);
   const [sa, setSa] = useState(false);
   const [ms, setMS] = useState(false);
-  const [curPercentage, setCurPercentage] = useState(null);
 
   useEffect(() => {
     router.prefetch('/');
     router.prefetch('/watch');
 
     setCurMus(currentMusic);
+
     if (audioRef.current) {
       audioRef.current.volume = volume / 100;
 
       const setAudioData = () => {
-        setDur(audioRef.current.duration);
+        dispatch(changeDuration(audioRef.current.duration));
+      };
+
+      const setCurrentTime = () => {
+        audioRef.current.currentTime = currentTime;
       };
 
       const nextF = async () => {
         setClickedTime(null);
 
-        setCurTime(0);
+        dispatch(changeCurrentTime(0));
 
         if (audioRef.current.play()) {
           await audioRef.current.pause();
@@ -77,24 +92,24 @@ function BottomBar() {
         audioRef.current.currentTime = 0;
 
         const setAudioData = () => {
-          setDur(audioRef.current.duration);
-          setCurTime(audioRef.current.currentTime);
+          dispatch(changeDuration(audioRef.current.duration));
+          dispatch(changeCurrentTime(audioRef.current.currentTime));
         };
 
         const setAudioTime = () => {
-          setCurTime(audioRef.current.currentTime);
+          dispatch(changeCurrentTime(audioRef?.current?.currentTime));
         };
 
         audioRef.current.addEventListener('loadeddata', setAudioData);
 
         audioRef.current.addEventListener('timeupdate', setAudioTime);
 
-        if (clickedTime && clickedTime !== curTime) {
+        if (clickedTime && clickedTime !== currentTime) {
           audioRef.current.currentTime = clickedTime;
           setClickedTime(null);
         }
 
-        setCurPercentage((curTime / dur) * 100);
+        dispatch(changeCurrentPercentage((currentTime / duration) * 100));
 
         setTimeout(() => {
           audioRef.current.play();
@@ -103,23 +118,31 @@ function BottomBar() {
       };
 
       const setAudioTime = () => {
-        setCurTime(audioRef.current.currentTime);
-        setCurPercentage((curTime / dur) * 100);
+        if (
+          audioRef?.current?.currentTime != undefined &&
+          audioRef?.current?.currentTime != null
+        ) {
+          dispatch(changeCurrentTime(audioRef?.current?.currentTime));
+        }
+        dispatch(changeCurrentPercentage((currentTime / duration) * 100));
 
-        if (audioRef.current.currentTime >= audioRef.current.duration - 0.4) {
+        if (
+          audioRef?.current?.currentTime >=
+          audioRef?.current?.duration - 0.4
+        ) {
           nextF();
         }
       };
 
       audioRef.current.addEventListener('loadeddata', setAudioData);
-
+      audioRef.current.addEventListener('loadstart', setCurrentTime);
       audioRef.current.addEventListener('timeupdate', setAudioTime);
 
       if (curMus == currentMusic) {
         musicPlay ? audioRef.current.play() : audioRef.current.pause();
       }
 
-      if (clickedTime && clickedTime !== curTime && sa) {
+      if (clickedTime && clickedTime !== currentTime && sa) {
         audioRef.current.currentTime = clickedTime;
         setClickedTime(null);
       }
@@ -127,6 +150,7 @@ function BottomBar() {
       if (audioState) {
         return () => {
           audioRef?.current?.removeEventListener('loadeddata', setAudioData);
+          audioRef?.current?.removeEventListener('loadstart', setCurrentTime);
           audioRef?.current?.removeEventListener('timeupdate', setAudioTime);
         };
       }
@@ -137,9 +161,9 @@ function BottomBar() {
     musicPlay,
     clickedTime,
     curMus,
-    curTime,
+    currentTime,
     currentMusic,
-    dur,
+    duration,
     dispatch,
     currentIndex,
     sa,
@@ -168,7 +192,7 @@ function BottomBar() {
 
   const prevFunc = async () => {
     setClickedTime(null);
-    setCurTime(0);
+    dispatch(changeCurrentTime(0));
 
     if (audioRef.current.play()) {
       audioRef.current.pause();
@@ -184,19 +208,19 @@ function BottomBar() {
     audioRef.current.volume = volume / 100;
     audioRef.current.currentTime = 0;
     const setAudioData = () => {
-      setDur(audioRef.current.duration);
-      setCurTime(audioRef.current.currentTime);
+      dispatch(changeDuration(audioRef.current.duration));
+      dispatch(changeCurrentTime(audioRef.current.currentTime));
     };
 
     const setAudioTime = () => {
-      setCurTime(audioRef.current.currentTime);
+      dispatch(changeCurrentTime(audioRef?.current?.currentTime));
     };
 
     audioRef.current.addEventListener('loadeddata', setAudioData);
 
     audioRef.current.addEventListener('timeupdate', setAudioTime);
 
-    if (clickedTime && clickedTime !== curTime) {
+    if (clickedTime && clickedTime !== currentTime) {
       audioRef.current.currentTime = clickedTime;
       setClickedTime(null);
     }
@@ -209,7 +233,7 @@ function BottomBar() {
 
   const nextFunc = async () => {
     setClickedTime(null);
-    setCurTime(0);
+    dispatch(changeCurrentTime(0));
 
     if (audioRef.current.play()) {
       await audioRef.current.pause();
@@ -226,24 +250,24 @@ function BottomBar() {
     audioRef.current.currentTime = 0;
 
     const setAudioData = () => {
-      setDur(audioRef.current.duration);
-      setCurTime(audioRef.current.currentTime);
+      dispatch(changeDuration(audioRef.current.duration));
+      dispatch(changeCurrentTime(audioRef.current.currentTime));
     };
 
     const setAudioTime = () => {
-      setCurTime(audioRef.current.currentTime);
+      dispatch(changeCurrentTime(audioRef?.current?.currentTime));
     };
 
     audioRef.current.addEventListener('loadeddata', setAudioData);
 
     audioRef.current.addEventListener('timeupdate', setAudioTime);
 
-    if (clickedTime && clickedTime !== curTime) {
+    if (clickedTime && clickedTime !== currentTime) {
       audioRef.current.currentTime = clickedTime;
       setClickedTime(null);
     }
 
-    setCurPercentage((curTime / dur) * 100);
+    dispatch(changeCurrentPercentage((currentTime / duration) * 100));
 
     setTimeout(() => {
       audioRef.current.play();
@@ -259,11 +283,11 @@ function BottomBar() {
         barRef.current.getBoundingClientRect().left + window.scrollX;
       const barWidth = barRef.current.offsetWidth;
       const clickPositionInBar = clickPositionInPage - barStart;
-      const timePerPixel = dur / barWidth;
+      const timePerPixel = duration / barWidth;
 
       audioRef.current.currentTime = timePerPixel * clickPositionInBar;
-      setCurTime(audioRef.current.currentTime);
-      setDur(audioRef.current.duration);
+      dispatch(changeCurrentTime(audioRef.current.currentTime));
+      dispatch(changeDuration(audioRef.current.duration));
     }
   }
 
@@ -294,21 +318,24 @@ function BottomBar() {
             YouTube Music <code>audio</code> Song
           </audio>
         ) : null}
-        {dur && curTime ? (
+        {duration && currentTime ? (
           <div className="bar">
-            {curPercentage != null ? (
+            {currentPercentage != null ? (
               <div>
                 <div
                   className={`h-[3px] hover:h-[4.5px] cursor-pointer transition-all fixed w-full flex`}
                   ref={barRef}
                   style={{
-                    background: `linear-gradient(to right, #f00 ${curPercentage}%, #4c4c4c  0)`,
+                    background: `linear-gradient(to right, #f00 ${currentPercentage}%, #4c4c4c  0)`,
                   }}
                   onMouseDown={(e) => handleTimeDrag(e)}
                 >
                   <span
                     className="bar__progress__knob w-3 h-3 rounded-full bg-[#f00] relative border-[1px] border-[#f00]"
-                    style={{ left: `${curPercentage - 0.5}%`, bottom: '4px' }}
+                    style={{
+                      left: `${currentPercentage - 0.5}%`,
+                      bottom: '4px',
+                    }}
                   ></span>
                 </div>
               </div>
@@ -352,7 +379,7 @@ function BottomBar() {
             </div>
             <div>
               <p className="text-[#AAAAAA] text-xs">
-                {formatDuration(curTime)} / {currentMusic.duration}
+                {formatDuration(currentTime)} / {currentMusic.duration}
               </p>
             </div>
           </div>
@@ -468,7 +495,7 @@ function BottomBar() {
                   className="transition-all"
                   h="1px"
                   onChange={(e) => {
-                    setVolume(e);
+                    dispatch(changeVolume(e));
                     setVolume2(e);
                     audioRef.current.volume = e / 100;
                   }}
@@ -487,7 +514,7 @@ function BottomBar() {
                     name="musicSoundMute"
                     color="#909090"
                     onClickFunc={() => {
-                      setVolume(volume2);
+                      dispatch(changeVolume(volume2));
                       audioRef.current.volume = volume2 / 100;
                     }}
                     size={24}
@@ -497,7 +524,7 @@ function BottomBar() {
                   <Icon
                     name="musicSound"
                     onClickFunc={() => {
-                      setVolume(0);
+                      dispatch(changeVolume(0));
                       audioRef.current.volume = 0 / 100;
                     }}
                     color="#909090"
@@ -571,16 +598,11 @@ function BottomBar() {
             setClickedTime,
             setMS,
             ms,
-            setCurTime,
             setCurMus,
             audioRef,
-            setDur,
             volume,
             clickedTime,
-            curTime,
             setAudioState,
-            setCurPercentage,
-            dur,
           }}
         />
       ) : null}

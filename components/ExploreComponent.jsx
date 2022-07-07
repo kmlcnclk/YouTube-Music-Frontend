@@ -4,6 +4,12 @@ import ScrollContainer from 'react-indiana-drag-scroll';
 import Icon from '../src/Icon';
 import NextImage from 'next/image';
 import { MdMoreVert } from 'react-icons/md';
+import { trueChangeValue } from '../store/bottomBarSlice';
+import {
+  trueChangeValueMusicPlay,
+  falseChangeValueMusicPlay,
+} from '../store/musicPlaySlice';
+import { changeValueMusicID } from '../store/musicIDSlice';
 
 class ExploreComponent extends Component {
   state = {
@@ -151,7 +157,9 @@ class ExploreComponent extends Component {
       trendingRef,
       prev4,
       next4,
+      dispatch,
     } = this.props;
+
 
     return (
       <div className="bg-black mx-[45px] pt-16">
